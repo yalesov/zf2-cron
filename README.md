@@ -13,7 +13,7 @@ This module serves as a central cron runner. It allows you to register a cron jo
 ```json
 {
     "require": {
-        "heartsentwined/zf2-cron": "dev-master"
+        "heartsentwined/zf2-cron": "1.*"
     }
 }
 ```
