@@ -94,7 +94,7 @@ In order to actually run the cron jobs, you will need to setup a (real) cron job
 Recommended: set up a cron job and run the ZF2 app through CLI:
 
 ```sh
-php public/index.php cron
+$ php public/index.php cron
 ```
 
 Fallback: if the above doesn't work, you can always run it through a browser (or through lynx, wget, etc)
