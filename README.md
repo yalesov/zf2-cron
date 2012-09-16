@@ -20,7 +20,13 @@ This module serves as a central cron runner. It allows you to register a cron jo
 
 Then add `Cron` to the `modules` key in `(app root)/config/application.config.yml`
 
-Cron module will also hook onto your application's database, through [`DoctrineORMModule`](https://github.com/doctrine/DoctrineORMModule). It will create a single table, `cron_job`, and will use the default EntityManager `doctrine.entitymanager.orm_default`. If your settings are different, please modify the `doctrine` section of `config/module.config.yml` as needed.
+Cron module will also hook onto your application's database, through [`DoctrineORMModule`](https://github.com/doctrine/DoctrineORMModule). It will create a single table, `cron_job`, and will use the default EntityManager `doctrine.entitymanager.orm_default`. If your settings are different, please modify the `doctrine` section of `config/module.config.yml` and instances of `doctrine.entitymanager.orm_default` in `Cron\Controller\CronController` as needed.
+
+Finally, you need to update your database schema. The recommended way is through Doctrine's CLI:
+
+```sh
+$ vendor/bin/doctrine-module orm:schema-tool:update --force
+```
 
 # Features
 
