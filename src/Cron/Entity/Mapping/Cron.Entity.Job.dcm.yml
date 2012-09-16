@@ -1,0 +1,27 @@
+Cron\Entity\Job:
+    type: entity
+    table: cron_job
+    repositoryClass: Cron\Repository\Job
+    fields:
+        id:
+            id: true
+            type: integer
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+        status:
+            type: string
+        output:
+            type: text
+            nullable: true
+        create_time:
+            type: datetime
+        schedule_time:
+            type: datetime
+        execute_time:
+            type: datetime
+            nullable: true
+        finish_time:
+            type: datetime
+            nullable: true

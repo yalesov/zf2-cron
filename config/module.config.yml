@@ -1,0 +1,49 @@
+di:
+    instance:
+        alias:
+            cron: Cron\Service\Cron
+        cron:
+            parameters:
+                em: doctrine.entitymanager.orm_default
+doctrine:
+    driver:
+        cron_driver:
+            class: Doctrine\ORM\Mapping\Driver\YamlDriver
+            cache: array
+            paths:
+                #- src/Cron/Entity/Mapping
+                - vendor/heartsentwined/zf2-cron/src/Cron/Entity/Mapping
+        orm_default:
+            drivers:
+                Cron\Entity: cron_driver
+controllers:
+    invokables:
+        Cron\Controller\Cron: Cron\Controller\CronController
+console:
+    router:
+        routes:
+            cron:
+                options:
+                    route: cron
+                    defaults:
+                        controller: Cron\Controller\Cron
+                        action: index
+# backup: allow browser calling cron, in case cli cannot run
+router:
+    routes:
+        cron:
+            type: Literal
+            options:
+                route: /cron
+                defaults:
+                    __NAMESPACE__: Cron\Controller
+                    controller: Cron
+                    action: index
+            may_terminate: true
+            child_routes:
+                default:
+                    type: Segment
+                    options:
+                        route: '/[:action[/]]'
+                        constraints:
+                            action: '[a-zA-Z][a-zA-Z0-9_-]*'

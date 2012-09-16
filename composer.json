@@ -1,0 +1,31 @@
+{
+    "name": "heartsentwined/zf2-cron",
+    "description": "ZF2 cron module",
+    "license": "GPL-3.0",
+    "keywords": ["cron", "zf2", "zendframework"],
+    "homepage": "https://github.com/heartsentwined/zf2-cron",
+    "authors": [
+        {
+            "name": "heartsentwined",
+            "email": "heartsentwined@cogito-lab.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Cron": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/yaml": "2.0.*",
+        "zendframework/zendframework": "2.0.*",
+        "heartsentwined/arg-validator": "1.*",
+        "heartsentwined/background-exec": "1.*",
+        "heartsentwined/zf2-doctrine": "1.*",
+
+        "heartsentwined/phing-task": "1.*",
+        "heartsentwined/zf2-phing-task": "1.*"
+    }
+}
