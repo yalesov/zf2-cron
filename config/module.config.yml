@@ -4,7 +4,8 @@ di:
             cron: Cron\Service\Cron
         cron:
             parameters:
-                em: doctrine.entitymanager.orm_default
+                #em: doctrine.entitymanager.orm_default
+                #can't inject EntityManager here; will pull from controller
                 scheduleAhead: 60
                 scheduleLifetime: 60
                 maxRunnintTime: 60
