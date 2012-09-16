@@ -25,9 +25,9 @@ class Job
     private $status;
 
     /**
-     * @var string $output
+     * @var string $error
      */
-    private $output;
+    private $error;
 
     /**
      * @var \DateTime $create_time
@@ -107,26 +107,26 @@ class Job
     }
 
     /**
-     * Set output
+     * Set error
      *
-     * @param string $output
+     * @param string $error
      * @return Job
      */
-    public function setOutput($output)
+    public function setError($error)
     {
-        $this->output = $output;
+        $this->error = $error;
     
         return $this;
     }
 
     /**
-     * Get output
+     * Get error
      *
      * @return string 
      */
-    public function getOutput()
+    public function getError()
     {
-        return $this->output;
+        return $this->error;
     }
 
     /**

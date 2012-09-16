@@ -133,8 +133,8 @@ class Cron
     /**
      * main entry function
      *
-     * 1. process cron jobs
-     * 2. schedule new cron jobs
+     * 1. schedule new cron jobs
+     * 2. process cron jobs
      * 3. cleanup old logs
      *
      * @return self
@@ -142,8 +142,8 @@ class Cron
     public function run()
     {
         $this
-            ->process()
             ->schedule()
+            ->process()
             ->cleanup();
         return $this;
     }
@@ -343,7 +343,23 @@ class Cron
      *
      * @param Entity\Job    $job
      * @param string        $frequency
-     *      supports '* 0-5,10-59/5 2-10,15-25 january-june/2 mon-fri'
+     *      any valid cron expression, in addition supporting:
+     *      range: '0-5'
+     *      range + interval: '10-59/5'
+     *      comma-separated combinations of these: '1,4,7,10-20'
+     *      English months: 'january'
+     *      English months (abbreviated to three letters): 'jan'
+     *      English weekdays: 'monday'
+     *      English weekdays (abbreviated to three letters): 'mon'
+     *      These text counterparts can be used in all places where their
+     *          numerical counterparts are allowed, e.g. 'jan-jun/2'
+     *      A full example:
+     *          '0-5,10-59/5 * 2-10,15-25 january-june/2 mon-fri' -
+     *          every minute between minute 0-5 + every 5th min between 10-59
+     *          every hour
+     *          every day between day 2-10 and day 15-25
+     *          every 2nd month between January-June
+     *          Monday-Friday
      * @param string|int    $time
      *      timestamp or strtotime()-compatible string
      * @throws Exception\InvalidArgumentException on invalid cron expression

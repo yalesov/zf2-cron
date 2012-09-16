@@ -12,7 +12,7 @@ Cron\Entity\Job:
             type: string
         status:
             type: string
-        output:
+        error:
             type: text
             nullable: true
         create_time:
