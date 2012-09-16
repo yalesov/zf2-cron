@@ -20,7 +20,7 @@ This module serves as a central cron runner. It allows you to register a cron jo
 
 Then add `Cron` to the `modules` key in `(app root)/config/application.config.yml`
 
-Cron module will also hook onto your application's database, through `DoctrineORMModule`. It will create a single table, `cron_job`, and will use the default EntityManager `doctrine.entitymanager.orm_default` that comes with `DoctrineORMModule`. If your settings are different, please modify the `doctrine` section of `config/module.config.yml` as needed.
+Cron module will also hook onto your application's database, through [`DoctrineORMModule`](https://github.com/doctrine/DoctrineORMModule). It will create a single table, `cron_job`, and will use the default EntityManager `doctrine.entitymanager.orm_default`. If your settings are different, please modify the `doctrine` section of `config/module.config.yml` as needed.
 
 # Features
 
@@ -107,7 +107,25 @@ You can interact with individual cron jobs through the Doctrine 2 ORM API. The C
 - `code`: cron job "batch/family" identifier, as set in `Cron::register()`
 - `status`: one of `success`, `running`, `missed`, or `error`
 - `error`: stores the error message for `error` cron jobs
-- `create_time`: time when this individual job is created
-- `schedule_time`: time when this individual job is scheduled to be run
-- `execute_time`: time when this job is run (start of execution)
-- `finish_time`: time when this job has terminated. will be `null` for `running` jobs.
+- `create_time`: (datetime) time when this individual job is created
+- `schedule_time`: (datetime) time when this individual job is scheduled to be run
+- `execute_time`: (datetime) time when this job is run (start of execution)
+- `finish_time`: (datetime) time when this job has terminated. will be `null` for `running` jobs.
+
+Example: retrieve all error messages of the cron job `foo`:
+
+```php
+// $em instance of EntityManager
+$errorJobs = $em->getRepository('Cron\Entity\Job')->findBy(array(
+    'code'   => 'foo',
+    'status' => \Cron\Repository\Job::STATUS_ERROR,
+));
+foreach ($errorJobs as $job) {
+    echo sprintf(
+        "cron job, code %s, executed at %s with error \n %s \n\n",
+        $job->getCode(), // will always be 'foo' in this example
+        $job->getExecuteTime()->format('r'),
+        $job->getError()
+    );
+}
+```
