@@ -12,6 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class Job extends EntityRepository
 {
+    const STATUS_PENDING = 'pending';
+    const STATUS_RUNNING = 'running';
+    const STATUS_MISSED  = 'missed';
+    const STATUS_ERROR   = 'error';
     /**
      * get completed cron jobs
      *

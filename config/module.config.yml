@@ -5,6 +5,11 @@ di:
         cron:
             parameters:
                 em: doctrine.entitymanager.orm_default
+                scheduleAhead: 60
+                scheduleLifetime: 60
+                maxRunnintTime: 60
+                successLogLifetime: 300
+                failureLogLifetime: 10080
 doctrine:
     driver:
         cron_driver:

@@ -26,7 +26,12 @@ class CronController extends AbstractActionController
         if (!$this->getRequest() instanceof ConsoleRequest){
             BackgroundExec::start();
         }
-        $this->getServiceLocator()->get('cron')->run();
+        $sm     = $this->getServiceLocator();
+        $cron   = $sm->get('cron');
+        $em     = $sm->get('doctrine.entitymanager.orm_default');
+        $cron
+            ->setEm($em)
+            ->run();
 
         if ($response = $this->getResponse()) {
             $response->setStatusCode(200);
