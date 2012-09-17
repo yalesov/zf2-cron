@@ -17,8 +17,7 @@ doctrine:
             class: Doctrine\ORM\Mapping\Driver\YamlDriver
             cache: array
             paths:
-                #- src/Cron/Entity/Mapping
-                - vendor/heartsentwined/zf2-cron/src/Cron/Entity/Mapping
+                - __DIR__/../src/Cron/Entity/Mapping
         orm_default:
             drivers:
                 Cron\Entity: cron_driver

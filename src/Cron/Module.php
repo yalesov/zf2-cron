@@ -1,7 +1,7 @@
 <?php
 namespace Cron;
 
-use Symfony\Component\Yaml\Yaml;
+use Heartsentwined\Yaml\Yaml;
 use Zend\EventManager\Event;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 

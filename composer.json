@@ -19,7 +19,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "symfony/yaml": "2.0.*",
+        "heartsentwined/yaml": "1.*",
         "zendframework/zendframework": "2.0.*",
         "heartsentwined/arg-validator": "1.*",
         "heartsentwined/background-exec": "1.*",
