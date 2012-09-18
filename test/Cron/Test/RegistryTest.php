@@ -2,7 +2,6 @@
 namespace Cron\Test;
 
 use Cron\Service\Registry;
-use Zend\Mvc\Application;
 
 class RegistryTest extends \PHPUnit_Framework_TestCase
 {
