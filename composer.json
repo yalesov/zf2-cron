@@ -25,7 +25,6 @@
         "heartsentwined/background-exec": "1.*",
         "heartsentwined/zf2-doctrine": "1.*",
 
-        "heartsentwined/phing-task": "1.*",
         "heartsentwined/zf2-phing-task": "1.*"
     }
 }
