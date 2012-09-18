@@ -3,6 +3,7 @@ namespace Cron\Controller;
 
 use Heartsentwined\BackgroundExec\BackgroundExec;
 use Zend\Console\Request as ConsoleRequest;
+use Zend\Console\Response as ConsoleResponse;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
@@ -23,7 +24,7 @@ class CronController extends AbstractActionController
      */
     public function indexAction()
     {
-        if (!$this->getRequest() instanceof ConsoleRequest){
+        if (!$this->getRequest() instanceof ConsoleRequest) {
             BackgroundExec::start();
         }
         $sm     = $this->getServiceLocator();
@@ -33,7 +34,8 @@ class CronController extends AbstractActionController
             ->setEm($em)
             ->run();
 
-        if ($response = $this->getResponse()) {
+        $response = $this->getResponse();
+        if (!$response instanceof ConsoleResponse) {
             $response->setStatusCode(200);
             return $response;
         }
