@@ -1,11 +1,11 @@
 <?php
-namespace Cron\Service;
+namespace Heartsentwined\Cron\Service;
 
 use Heartsentwined\ArgValidator\ArgValidator;
-use Cron\Entity;
-use Cron\Exception;
-use Cron\Repository;
-use Cron\Service\Registry;
+use Heartsentwined\Cron\Entity;
+use Heartsentwined\Cron\Exception;
+use Heartsentwined\Cron\Repository;
+use Heartsentwined\Cron\Service\Registry;
 use Doctrine\ORM\EntityManager;
 
 /**

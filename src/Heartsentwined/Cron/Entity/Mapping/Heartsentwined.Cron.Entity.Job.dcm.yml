@@ -1,7 +1,7 @@
-Cron\Entity\Job:
+Heartsentwined\Cron\Entity\Job:
     type: entity
     table: cron_job
-    repositoryClass: Cron\Repository\Job
+    repositoryClass: Heartsentwined\Cron\Repository\Job
     fields:
         id:
             id: true

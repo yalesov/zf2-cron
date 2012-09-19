@@ -1,7 +1,7 @@
 <?php
-namespace Cron\Exception;
+namespace Heartsentwined\Cron\Exception;
 
-use Cron\ExceptionInterface;
+use Heartsentwined\Cron\ExceptionInterface;
 
 /**
  * InvalidArgumentException

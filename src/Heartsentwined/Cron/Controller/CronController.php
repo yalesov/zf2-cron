@@ -1,5 +1,5 @@
 <?php
-namespace Cron\Controller;
+namespace Heartsentwined\Cron\Controller;
 
 use Heartsentwined\BackgroundExec\BackgroundExec;
 use Zend\Console\Request as ConsoleRequest;

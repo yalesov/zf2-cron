@@ -1,2 +1,2 @@
 <?php
-require_once __DIR__ . '/src/Cron/Module.php';
+require_once __DIR__ . '/src/Heartsentwined/Cron/Module.php';

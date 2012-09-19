@@ -1,11 +1,11 @@
 <?php
 
-namespace Cron\Entity;
+namespace Heartsentwined\Cron\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Cron\Entity\Job
+ * Heartsentwined\Cron\Entity\Job
  */
 class Job
 {

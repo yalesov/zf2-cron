@@ -1,5 +1,5 @@
 <?php
-namespace Cron;
+namespace Heartsentwined\Cron;
 
 /**
  * ExceptionInterface

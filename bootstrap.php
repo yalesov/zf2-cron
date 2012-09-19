@@ -6,11 +6,14 @@ return Application::init(array(
     'modules'   => array(
         'DoctrineModule',
         'DoctrineORMModule',
-        'Cron',
+        'Heartsentwined\\Cron',
     ),
     'module_listener_options' => array(
+        'config_glob_paths' => array(
+            __DIR__ . '/test/config/{,*.}php'
+        ),
         'module_paths' => array(
-            'Cron' => __DIR__,
+            'Heartsentwined\\Cron' => __DIR__,
             'vendor',
         ),
     ),

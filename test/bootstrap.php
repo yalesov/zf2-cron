@@ -1,4 +1,4 @@
 <?php
 chdir(__DIR__.'/..');
 $loader = require 'vendor/autoload.php';
-$loader->add('Cron\Test', __DIR__);
+$loader->add('Heartsentwined\Cron\Test', __DIR__);

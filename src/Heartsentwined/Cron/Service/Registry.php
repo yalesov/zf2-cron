@@ -1,5 +1,5 @@
 <?php
-namespace Cron\Service;
+namespace Heartsentwined\Cron\Service;
 
 use Heartsentwined\ArgValidator\ArgValidator;
 

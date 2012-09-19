@@ -1,20 +1,36 @@
 <?php
-namespace Cron\Test;
+namespace Heartsentwined\Cron\Test;
 
-use Cron\Service\Registry;
+use Heartsentwined\Cron\Entity;
+use Heartsentwined\Cron\Service\Registry;
+use Heartsentwined\Phpunit\Testcase\Doctrine as DoctrineTestcase;
 
-class RegistryTest extends \PHPUnit_Framework_TestCase
+class RegistryTest extends DoctrineTestcase
 {
     public function setUp()
     {
-        $application = require __DIR__ . '/../../../bootstrap.php';
-        $this->sm = $application->getServiceManager();
+        $this
+            ->setBootstrap(__DIR__ . '/../../../../bootstrap.php')
+            ->setEmAlias('doctrine.entitymanager.orm_default')
+            ->setTmpDir('tmp');
+        parent::setUp();
     }
 
     public function testInstance()
     {
         $instance = Registry::getInstance();
-        $this->assertInstanceOf('Cron\Service\Registry', $instance);
+        $this->assertInstanceOf('Heartsentwined\Cron\Service\Registry', $instance);
+
+        $job = new Entity\Job;
+        $this->em->persist($job);
+        $job
+            ->setCode('test-job')
+            ->setStatus('pending')
+            ->setCreateTime(new \DateTime)
+            ->setScheduleTime(new \DateTime);
+        $this->em->flush();
+
+        $this->assertSame($job, $this->em->find('Heartsentwined\Cron\Entity\Job', 1));
     }
 
     public function testSingleton()
