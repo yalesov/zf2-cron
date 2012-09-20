@@ -14,6 +14,7 @@ class Job extends EntityRepository
 {
     const STATUS_PENDING = 'pending';
     const STATUS_RUNNING = 'running';
+    const STATUS_SUCCESS = 'success';
     const STATUS_MISSED  = 'missed';
     const STATUS_ERROR   = 'error';
 

@@ -208,7 +208,7 @@ class Cron
                 call_user_func_array($callback, $args);
 
                 $job
-                    ->setStatus('success')
+                    ->setStatus(Repository\Job::STATUS_SUCCESS)
                     ->setFinishTime(new \DateTime);
 
             } catch (\Exception $e) {
@@ -268,7 +268,7 @@ class Cron
                     $scheduleTimestamp, $item['frequency'])) {
                     $job
                         ->setCode($code)
-                        ->setStatus('pending')
+                        ->setStatus(Repository\Job::STATUS_PENDING)
                         ->setCreateTime(new \DateTime)
                         ->setScheduleTime($scheduleTime);
                     $em->persist($job);
@@ -296,9 +296,12 @@ class Cron
         $history = $repo->getHistory();
 
         $lifetime = array(
-            'success'   => $this->getSuccessLogLifetime() * 60,
-            'missed'    => $this->getFailureLogLifetime() * 60,
-            'error'     => $this->getFailureLogLifetime() * 60,
+            Repository\Job::STATUS_SUCCESS  =>
+                $this->getSuccessLogLifetime() * 60,
+            Repository\Job::STATUS_MISSED   =>
+                $this->getFailureLogLifetime() * 60,
+            Repository\Job::STATUS_ERROR    =>
+                $this->getFailureLogLifetime() * 60,
         );
 
         foreach ($history as $job) {
@@ -316,7 +319,7 @@ class Cron
             if ($job->getExecuteTime()->getTimestamp()
                 < $now - $this->getMaxRunningTime() * 60) {
                 $job
-                    ->setStatus('pending')
+                    ->setStatus(Repository\Job::STATUS_PENDING)
                     ->setErrorMsg(null)
                     ->setStackTrace(null)
                     ->setScheduleTime(new \DateTime)
