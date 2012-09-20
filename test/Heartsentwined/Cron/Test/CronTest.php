@@ -240,7 +240,7 @@ class CronTest extends DoctrineTestcase
 
     public function testSchedule()
     {
-        // reg some jobs for 1hr
+        // reg a 15-min for 1hr
         $this->cron->setScheduleAhead(60);
         $dummy = $this->getDummy();
         $dummy
@@ -249,11 +249,51 @@ class CronTest extends DoctrineTestcase
 
         $this->cron->register(
             'time', '*/15 * * * *', array($dummy, 'run'), array());
-        $this->cron->schedule();
 
+        // pending job set should be empty before calling schedule
         $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
             ->getPending();
+        $this->assertCount(0, $pending);
 
+        $this->cron
+            ->resetPending()
+            ->schedule();
+        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getPending();
         $this->assertCount(4, $pending);
+
+        // re-schedule - nothing should have changed
+        $this->cron
+            ->resetPending()
+            ->schedule();
+        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getPending();
+        $this->assertCount(4, $pending);
+
+        // extend reg period for another hour
+        $this->cron
+            ->setScheduleAhead(120)
+            ->resetPending()
+            ->schedule();
+        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getPending();
+        $this->assertCount(8, $pending);
+
+        // reg another job
+        $this->cron->register(
+            'time2', '*/30 * * * *', array($dummy, 'run'), array());
+
+        // pending job set should not have changed yet
+        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getPending();
+        $this->assertCount(8, $pending);
+
+        // now schedule it - for 2hrs, as per changed
+        $this->cron
+            ->resetPending()
+            ->schedule();
+        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getPending();
+        $this->assertCount(12, $pending);
     }
 }

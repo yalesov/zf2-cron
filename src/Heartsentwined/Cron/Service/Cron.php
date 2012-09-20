@@ -129,6 +129,11 @@ class Cron
         }
         return $this->pending;
     }
+    public function resetPending()
+    {
+        $this->pending = null;
+        return $this;
+    }
 
     /**
      * main entry function
@@ -258,7 +263,7 @@ class Cron
                 $scheduleTimestamp = $scheduleTime->getTimestamp();
 
                 $identifier = $code . $scheduleTimestamp;
-                if (!empty($exists[$identifier])) {
+                if (isset($exists[$identifier])) {
                     //already scheduled
                     continue;
                 }
@@ -272,6 +277,7 @@ class Cron
                         ->setCreateTime(new \DateTime)
                         ->setScheduleTime($scheduleTime);
                     $em->persist($job);
+                    $exists[$identifier] = true;
                 }
             }
         }
