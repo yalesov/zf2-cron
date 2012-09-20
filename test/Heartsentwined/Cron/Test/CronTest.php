@@ -76,19 +76,22 @@ class CronTest extends DoctrineTestcase
 
     public function testGetPending()
     {
-        $jobPastPending =
-            $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
-        $jobFuturePending =
-            $this->getJob(Repository\Job::STATUS_PENDING, time()+100);
+        $pastTimestamp = time()-100;
+        $futureTimestamp = time()+100;
 
-        $this->getJob(Repository\Job::STATUS_SUCCESS, time()-100);
-        $this->getJob(Repository\Job::STATUS_RUNNING, time()-100);
-        $this->getJob(Repository\Job::STATUS_MISSED, time()-100);
-        $this->getJob(Repository\Job::STATUS_ERROR, time()-100);
-        $this->getJob(Repository\Job::STATUS_SUCCESS, time()+100);
-        $this->getJob(Repository\Job::STATUS_RUNNING, time()+100);
-        $this->getJob(Repository\Job::STATUS_MISSED, time()+100);
-        $this->getJob(Repository\Job::STATUS_ERROR, time()+100);
+        $jobPastPending =
+            $this->getJob(Repository\Job::STATUS_PENDING, $pastTimestamp);
+        $jobFuturePending =
+            $this->getJob(Repository\Job::STATUS_PENDING, $futureTimestamp);
+
+        $this->getJob(Repository\Job::STATUS_SUCCESS, $pastTimestamp);
+        $this->getJob(Repository\Job::STATUS_RUNNING, $pastTimestamp);
+        $this->getJob(Repository\Job::STATUS_MISSED, $pastTimestamp);
+        $this->getJob(Repository\Job::STATUS_ERROR, $pastTimestamp);
+        $this->getJob(Repository\Job::STATUS_SUCCESS, $futureTimestamp);
+        $this->getJob(Repository\Job::STATUS_RUNNING, $futureTimestamp);
+        $this->getJob(Repository\Job::STATUS_MISSED, $futureTimestamp);
+        $this->getJob(Repository\Job::STATUS_ERROR, $futureTimestamp);
 
         $pending = array();
         foreach ($this->cron->getPending() as $job) {
@@ -106,9 +109,12 @@ class CronTest extends DoctrineTestcase
 
     public function testProcess()
     {
+        $pastTimestamp = time()-100;
+        $futureTimestamp = time()+100;
+
         // only past + pending should run
 
-        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, $pastTimestamp);
         $cron = $this->getMock(
             'Heartsentwined\Cron\Service\Cron',
             array('getPending'))
@@ -132,15 +138,15 @@ class CronTest extends DoctrineTestcase
         // past + (not pending) and all future
 
         foreach (array(
-            $this->getJob(Repository\Job::STATUS_SUCCESS, time()-100),
-            $this->getJob(Repository\Job::STATUS_RUNNING, time()-100),
-            $this->getJob(Repository\Job::STATUS_MISSED, time()-100),
-            $this->getJob(Repository\Job::STATUS_ERROR, time()-100),
-            $this->getJob(Repository\Job::STATUS_PENDING, time()+100),
-            $this->getJob(Repository\Job::STATUS_SUCCESS, time()+100),
-            $this->getJob(Repository\Job::STATUS_RUNNING, time()+100),
-            $this->getJob(Repository\Job::STATUS_MISSED, time()+100),
-            $this->getJob(Repository\Job::STATUS_ERROR, time()+100),
+            $this->getJob(Repository\Job::STATUS_SUCCESS, $pastTimestamp),
+            $this->getJob(Repository\Job::STATUS_RUNNING, $pastTimestamp),
+            $this->getJob(Repository\Job::STATUS_MISSED, $pastTimestamp),
+            $this->getJob(Repository\Job::STATUS_ERROR, $pastTimestamp),
+            $this->getJob(Repository\Job::STATUS_PENDING, $futureTimestamp),
+            $this->getJob(Repository\Job::STATUS_SUCCESS, $futureTimestamp),
+            $this->getJob(Repository\Job::STATUS_RUNNING, $futureTimestamp),
+            $this->getJob(Repository\Job::STATUS_MISSED, $futureTimestamp),
+            $this->getJob(Repository\Job::STATUS_ERROR, $futureTimestamp),
         ) as $job) {
             $prevStatus = $job->getStatus();
             $cron = $this->getMock(
@@ -166,7 +172,7 @@ class CronTest extends DoctrineTestcase
 
         // cron job throwing exceptions
 
-        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, $pastTimestamp);
         $cron = $this->getMock(
             'Heartsentwined\Cron\Service\Cron',
             array('getPending'))
@@ -192,7 +198,7 @@ class CronTest extends DoctrineTestcase
 
         // too late for job
 
-        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, $pastTimestamp);
         $cron = $this->getMock(
             'Heartsentwined\Cron\Service\Cron',
             array('getPending'))
@@ -216,7 +222,7 @@ class CronTest extends DoctrineTestcase
 
         // job not registered
 
-        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, $pastTimestamp);
         $cron = $this->getMock(
             'Heartsentwined\Cron\Service\Cron',
             array('getPending'))
@@ -317,26 +323,29 @@ class CronTest extends DoctrineTestcase
 
     public function testRecoverRunning()
     {
-        $jobPastPending =
-            $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
-        $jobPastRunning =
-            $this->getJob(Repository\Job::STATUS_RUNNING, time()-100);
-        $jobFuturePending =
-            $this->getJob(Repository\Job::STATUS_PENDING, time()+100);
-        $jobFutureRunning =
-            $this->getJob(Repository\Job::STATUS_RUNNING, time()+100);
+        $pastTimestamp = time()-100;
+        $futureTimestamp = time()+100;
 
-        $this->getJob(Repository\Job::STATUS_SUCCESS, time()-100);
-        $this->getJob(Repository\Job::STATUS_MISSED, time()-100);
-        $this->getJob(Repository\Job::STATUS_ERROR, time()-100);
-        $this->getJob(Repository\Job::STATUS_SUCCESS, time()+100);
-        $this->getJob(Repository\Job::STATUS_MISSED, time()+100);
-        $this->getJob(Repository\Job::STATUS_ERROR, time()+100);
+        $jobPastPending =
+            $this->getJob(Repository\Job::STATUS_PENDING, $pastTimestamp);
+        $jobPastRunning =
+            $this->getJob(Repository\Job::STATUS_RUNNING, $pastTimestamp);
+        $jobFuturePending =
+            $this->getJob(Repository\Job::STATUS_PENDING, $futureTimestamp);
+        $jobFutureRunning =
+            $this->getJob(Repository\Job::STATUS_RUNNING, $futureTimestamp);
+
+        $this->getJob(Repository\Job::STATUS_SUCCESS, $pastTimestamp);
+        $this->getJob(Repository\Job::STATUS_MISSED, $pastTimestamp);
+        $this->getJob(Repository\Job::STATUS_ERROR, $pastTimestamp);
+        $this->getJob(Repository\Job::STATUS_SUCCESS, $futureTimestamp);
+        $this->getJob(Repository\Job::STATUS_MISSED, $futureTimestamp);
+        $this->getJob(Repository\Job::STATUS_ERROR, $futureTimestamp);
 
         $jobPastRunning
-            ->setExecuteTime(\DateTime::createFromFormat('U', time()-100));
+            ->setExecuteTime(\DateTime::createFromFormat('U', $pastTimestamp));
         $jobFutureRunning
-            ->setExecuteTime(\DateTime::createFromFormat('U', time()+100));
+            ->setExecuteTime(\DateTime::createFromFormat('U', $futureTimestamp));
         $this->em->flush();
 
         $this->cron
@@ -414,5 +423,10 @@ class CronTest extends DoctrineTestcase
         sort($jobs);
 
         $this->assertSame($retain, $jobs);
+    }
+
+    public function testTryLockJob()
+    {
+        $now = time();
     }
 }
