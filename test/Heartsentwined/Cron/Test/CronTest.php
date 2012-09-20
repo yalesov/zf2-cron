@@ -35,142 +35,22 @@ class CronTest extends DoctrineTestcase
         return $dummy;
     }
 
-    public function getJobPastPending()
+    public function getJob($status, $scheduleTimestamp)
     {
-        $now    = \DateTime::createFromFormat('U', time());
-        $past   = \DateTime::createFromFormat('U', time()-3600);
+        $now            = \DateTime::createFromFormat('U', time());
+        $scheduleTime   = \DateTime::createFromFormat('U', $scheduleTimestamp);
 
         $job = new Entity\Job;
         $this->em->persist($job);
         $job
             ->setCode('time')
-            ->setStatus(Repository\Job::STATUS_PENDING)
+            ->setStatus($status)
             ->setCreateTime($now)
-            ->setScheduleTime($past);
+            ->setScheduleTime($scheduleTime);
         $this->em->flush();
 
         return $job;
     }
-
-    public function getJobPastRunning()
-    {
-        $now    = \DateTime::createFromFormat('U', time());
-        $past   = \DateTime::createFromFormat('U', time()-3600);
-
-        $job = new Entity\Job;
-        $this->em->persist($job);
-        $job
-            ->setCode('time')
-            ->setStatus(Repository\Job::STATUS_RUNNING)
-            ->setCreateTime($now)
-            ->setScheduleTime($past);
-        $this->em->flush();
-
-        return $job;
-    }
-
-    public function getJobPastMissed()
-    {
-        $now    = \DateTime::createFromFormat('U', time());
-        $past   = \DateTime::createFromFormat('U', time()-3600);
-
-        $job = new Entity\Job;
-        $this->em->persist($job);
-        $job
-            ->setCode('time')
-            ->setStatus(Repository\Job::STATUS_MISSED)
-            ->setCreateTime($now)
-            ->setScheduleTime($past);
-        $this->em->flush();
-
-        return $job;
-    }
-
-    public function getJobPastError()
-    {
-        $now    = \DateTime::createFromFormat('U', time());
-        $past   = \DateTime::createFromFormat('U', time()-3600);
-
-        $job = new Entity\Job;
-        $this->em->persist($job);
-        $job
-            ->setCode('time')
-            ->setStatus(Repository\Job::STATUS_ERROR)
-            ->setCreateTime($now)
-            ->setScheduleTime($past);
-        $this->em->flush();
-
-        return $job;
-    }
-
-    public function getJobFuturePending()
-    {
-        $now    = \DateTime::createFromFormat('U', time());
-        $future = \DateTime::createFromFormat('U', time()+3600);
-
-        $job = new Entity\Job;
-        $this->em->persist($job);
-        $job
-            ->setCode('time')
-            ->setStatus(Repository\Job::STATUS_PENDING)
-            ->setCreateTime($now)
-            ->setScheduleTime($future);
-        $this->em->flush();
-
-        return $job;
-    }
-
-    public function getJobFutureRunning()
-    {
-        $now    = \DateTime::createFromFormat('U', time());
-        $future = \DateTime::createFromFormat('U', time()+3600);
-
-        $job = new Entity\Job;
-        $this->em->persist($job);
-        $job
-            ->setCode('time')
-            ->setStatus(Repository\Job::STATUS_RUNNING)
-            ->setCreateTime($now)
-            ->setScheduleTime($future);
-        $this->em->flush();
-
-        return $job;
-    }
-
-    public function getJobFutureMissed()
-    {
-        $now    = \DateTime::createFromFormat('U', time());
-        $future = \DateTime::createFromFormat('U', time()+3600);
-
-        $job = new Entity\Job;
-        $this->em->persist($job);
-        $job
-            ->setCode('time')
-            ->setStatus(Repository\Job::STATUS_MISSED)
-            ->setCreateTime($now)
-            ->setScheduleTime($future);
-        $this->em->flush();
-
-        return $job;
-    }
-
-    public function getJobFutureError()
-    {
-        $now    = \DateTime::createFromFormat('U', time());
-        $future = \DateTime::createFromFormat('U', time()+3600);
-
-        $job = new Entity\Job;
-        $this->em->persist($job);
-        $job
-            ->setCode('time')
-            ->setStatus(Repository\Job::STATUS_ERROR)
-            ->setCreateTime($now)
-            ->setScheduleTime($future);
-        $this->em->flush();
-
-        return $job;
-    }
-
     public function testRun()
     {
         $cron = $this->getMock(
@@ -195,15 +75,19 @@ class CronTest extends DoctrineTestcase
 
     public function testGetPending()
     {
-        $jobPastPending = $this->getJobPastPending();
-        $jobFuturePending = $this->getJobFuturePending();
+        $jobPastPending =
+            $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
+        $jobFuturePending =
+            $this->getJob(Repository\Job::STATUS_PENDING, time()+3600);
 
-        $this->getJobPastRunning();
-        $this->getJobPastMissed();
-        $this->getJobPastError();
-        $this->getJobFutureRunning();
-        $this->getJobFutureMissed();
-        $this->getJobFutureError();
+        $this->getJob(Repository\Job::STATUS_SUCCESS, time()-3600);
+        $this->getJob(Repository\Job::STATUS_RUNNING, time()-3600);
+        $this->getJob(Repository\Job::STATUS_MISSED, time()-3600);
+        $this->getJob(Repository\Job::STATUS_ERROR, time()-3600);
+        $this->getJob(Repository\Job::STATUS_SUCCESS, time()+3600);
+        $this->getJob(Repository\Job::STATUS_RUNNING, time()+3600);
+        $this->getJob(Repository\Job::STATUS_MISSED, time()+3600);
+        $this->getJob(Repository\Job::STATUS_ERROR, time()+3600);
 
         $pending = array();
         foreach ($this->cron->getPending() as $job) {
@@ -223,7 +107,7 @@ class CronTest extends DoctrineTestcase
     {
         // only past + pending should run
 
-        $job = $this->getJobPastPending();
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
         $cron = $this->getMock(
             'Heartsentwined\\Cron\\Service\\Cron',
             array('getPending'))
@@ -247,13 +131,15 @@ class CronTest extends DoctrineTestcase
         // past + (not pending) and all future
 
         foreach (array(
-            $this->getJobPastRunning(),
-            $this->getJobPastMissed(),
-            $this->getJobPastError(),
-            $this->getJobFuturePending(),
-            $this->getJobFutureRunning(),
-            $this->getJobFutureMissed(),
-            $this->getJobFutureError(),
+            $this->getJob(Repository\Job::STATUS_SUCCESS, time()-3600),
+            $this->getJob(Repository\Job::STATUS_RUNNING, time()-3600),
+            $this->getJob(Repository\Job::STATUS_MISSED, time()-3600),
+            $this->getJob(Repository\Job::STATUS_ERROR, time()-3600),
+            $this->getJob(Repository\Job::STATUS_PENDING, time()+3600),
+            $this->getJob(Repository\Job::STATUS_SUCCESS, time()+3600),
+            $this->getJob(Repository\Job::STATUS_RUNNING, time()+3600),
+            $this->getJob(Repository\Job::STATUS_MISSED, time()+3600),
+            $this->getJob(Repository\Job::STATUS_ERROR, time()+3600),
         ) as $job) {
             $prevStatus = $job->getStatus();
             $cron = $this->getMock(
@@ -279,7 +165,7 @@ class CronTest extends DoctrineTestcase
 
         // cron job throwing exceptions
 
-        $job = $this->getJobPastPending();
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
         $cron = $this->getMock(
             'Heartsentwined\\Cron\\Service\\Cron',
             array('getPending'))
@@ -305,7 +191,7 @@ class CronTest extends DoctrineTestcase
 
         // too late for job
 
-        $job = $this->getJobPastPending();
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
         $cron = $this->getMock(
             'Heartsentwined\\Cron\\Service\\Cron',
             array('getPending'))
@@ -329,7 +215,7 @@ class CronTest extends DoctrineTestcase
 
         // job not registered
 
-        $job = $this->getJobPastPending();
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
         $cron = $this->getMock(
             'Heartsentwined\\Cron\\Service\\Cron',
             array('getPending'))
@@ -349,5 +235,9 @@ class CronTest extends DoctrineTestcase
         $this->assertNotEmpty($job->getStackTrace());
         $this->assertNull($job->getExecuteTime());
         $this->assertNull($job->getFinishTime());
+    }
+
+    public function testSchedule()
+    {
     }
 }
