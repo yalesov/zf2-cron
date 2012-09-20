@@ -117,7 +117,7 @@ You can interact with individual cron jobs through the Doctrine 2 ORM API. The C
 - `createTime`: (datetime) time when this individual job is created
 - `scheduleTime`: (datetime) time when this individual job is scheduled to be run
 - `executeTime`: (datetime) time when this job is run (start of execution)
-- `finishTime`: (datetime) time when this job has terminated. will be `null` for `running` or `error` jobs.
+- `finishTime`: (datetime) time when this job has terminated. will be `null` for jobs other than `success`.
 
 Example: retrieve all error messages of the cron job `foo`:
 
