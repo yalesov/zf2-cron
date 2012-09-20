@@ -23,6 +23,7 @@ class CronTest extends DoctrineTestcase
 
     public function tearDown()
     {
+        Registry::destroy();
         unset($this->cron);
         parent::tearDown();
     }
@@ -239,5 +240,20 @@ class CronTest extends DoctrineTestcase
 
     public function testSchedule()
     {
+        // reg some jobs for 1hr
+        $this->cron->setScheduleAhead(60);
+        $dummy = $this->getDummy();
+        $dummy
+            ->expects($this->any())
+            ->method('run');
+
+        $this->cron->register(
+            'time', '*/15 * * * *', array($dummy, 'run'), array());
+        $this->cron->schedule();
+
+        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getPending();
+
+        $this->assertCount(4, $pending);
     }
 }

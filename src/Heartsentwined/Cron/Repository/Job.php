@@ -28,7 +28,8 @@ class Job extends EntityRepository
         $dqb = $this->_em->createQueryBuilder();
         $dqb->select(array('j'))
             ->from('Heartsentwined\Cron\Entity\Job', 'j')
-            ->where($dqb->expr()->in('j.status', array(self::STATUS_PENDING)));
+            ->where($dqb->expr()->in('j.status', array(self::STATUS_PENDING)))
+            ->orderBy('j.scheduleTime', 'ASC');
         return $dqb->getQuery()->getResult();
     }
 
@@ -42,7 +43,8 @@ class Job extends EntityRepository
         $dqb = $this->_em->createQueryBuilder();
         $dqb->select(array('j'))
             ->from('Heartsentwined\Cron\Entity\Job', 'j')
-            ->where($dqb->expr()->in('j.status', array(self::STATUS_RUNNING)));
+            ->where($dqb->expr()->in('j.status', array(self::STATUS_RUNNING)))
+            ->orderBy('j.scheduleTime', 'ASC');
         return $dqb->getQuery()->getResult();
     }
 
@@ -58,7 +60,8 @@ class Job extends EntityRepository
             ->from('Heartsentwined\Cron\Entity\Job', 'j')
             ->where($dqb->expr()->in('j.status', array(
                 self::STATUS_SUCCESS, self::STATUS_MISSED, self::STATUS_ERROR,
-            )));
+            )))
+            ->orderBy('j.scheduleTime', 'ASC');
         return $dqb->getQuery()->getResult();
     }
 }
