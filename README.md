@@ -111,13 +111,13 @@ You can interact with individual cron jobs through the Doctrine 2 ORM API. The C
 
 - `id`: unique identifier for individual cron jobs
 - `code`: cron job "batch/family" identifier, as set in `Cron::register()`
-- `status`: one of `success`, `running`, `missed`, or `error`
+- `status`: one of `pending`, `success`, `running`, `missed`, or `error`
 - `errorMsg`: stores the error message for `error` cron jobs
 - `stackTrace`: stores the stack trace for `error` cron jobs
 - `createTime`: (datetime) time when this individual job is created
 - `scheduleTime`: (datetime) time when this individual job is scheduled to be run
 - `executeTime`: (datetime) time when this job is run (start of execution)
-- `finishTime`: (datetime) time when this job has terminated. will be `null` for `running` jobs.
+- `finishTime`: (datetime) time when this job has terminated. will be `null` for `running` or `error` jobs.
 
 Example: retrieve all error messages of the cron job `foo`:
 
