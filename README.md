@@ -37,7 +37,7 @@ $ vendor/bin/doctrine-module orm:schema-tool:update --force
 - Cron job identifiers - allow for later modification of cron jobs
 - Cron job lock - prevent a single job from being executed multiple times
 - Unresponsive script recovery - recover long-running cron jobs and re-queue them automatically
-- Logging - All jobs, whether `success`, `running`, `missed`, or `error`, will be logged; error messages and stack traces are also logged for `error` cron jobs.
+- Logging - All jobs, whether `success`, `running`, `missed`, or `error`, will be logged; error messages and stack traces are also logged for `error` and `missed` cron jobs.
 
 # Config
 
