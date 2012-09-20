@@ -300,6 +300,27 @@ class Cron
         return $this;
     }
 
+    public function recoverRunning()
+    {
+        $em = $this->getEm();
+        $running = $em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getRunning();
+        $expiryTime = time() - $this->getMaxRunningTime() * 60;
+
+        foreach ($running as $job) {
+            if ($job->getExecuteTime()->getTimestamp() < $expiryTime) {
+                $job
+                    ->setStatus(Repository\Job::STATUS_PENDING)
+                    ->setErrorMsg(null)
+                    ->setStackTrace(null)
+                    ->setScheduleTime(new \DateTime)
+                    ->setExecuteTime(null);
+            }
+        }
+
+        return $this;
+    }
+
     /**
      * delete old cron job logs
      *
@@ -326,27 +347,6 @@ class Cron
                 && $executeTime->getTimestamp()
                     < $now - $lifetime[$job->getStatus()]) {
                 $em->remove($job);
-            }
-        }
-
-        return $this;
-    }
-
-    public function recoverRunning()
-    {
-        $em = $this->getEm();
-        $running = $em->getRepository('Heartsentwined\Cron\Entity\Job')
-            ->getRunning();
-        $expiryTime = time() - $this->getMaxRunningTime() * 60;
-
-        foreach ($running as $job) {
-            if ($job->getExecuteTime()->getTimestamp() < $expiryTime) {
-                $job
-                    ->setStatus(Repository\Job::STATUS_PENDING)
-                    ->setErrorMsg(null)
-                    ->setStackTrace(null)
-                    ->setScheduleTime(new \DateTime)
-                    ->setExecuteTime(null);
             }
         }
 
