@@ -76,18 +76,18 @@ class CronTest extends DoctrineTestcase
     public function testGetPending()
     {
         $jobPastPending =
-            $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
+            $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $jobFuturePending =
-            $this->getJob(Repository\Job::STATUS_PENDING, time()+3600);
+            $this->getJob(Repository\Job::STATUS_PENDING, time()+100);
 
-        $this->getJob(Repository\Job::STATUS_SUCCESS, time()-3600);
-        $this->getJob(Repository\Job::STATUS_RUNNING, time()-3600);
-        $this->getJob(Repository\Job::STATUS_MISSED, time()-3600);
-        $this->getJob(Repository\Job::STATUS_ERROR, time()-3600);
-        $this->getJob(Repository\Job::STATUS_SUCCESS, time()+3600);
-        $this->getJob(Repository\Job::STATUS_RUNNING, time()+3600);
-        $this->getJob(Repository\Job::STATUS_MISSED, time()+3600);
-        $this->getJob(Repository\Job::STATUS_ERROR, time()+3600);
+        $this->getJob(Repository\Job::STATUS_SUCCESS, time()-100);
+        $this->getJob(Repository\Job::STATUS_RUNNING, time()-100);
+        $this->getJob(Repository\Job::STATUS_MISSED, time()-100);
+        $this->getJob(Repository\Job::STATUS_ERROR, time()-100);
+        $this->getJob(Repository\Job::STATUS_SUCCESS, time()+100);
+        $this->getJob(Repository\Job::STATUS_RUNNING, time()+100);
+        $this->getJob(Repository\Job::STATUS_MISSED, time()+100);
+        $this->getJob(Repository\Job::STATUS_ERROR, time()+100);
 
         $pending = array();
         foreach ($this->cron->getPending() as $job) {
@@ -107,7 +107,7 @@ class CronTest extends DoctrineTestcase
     {
         // only past + pending should run
 
-        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $cron = $this->getMock(
             'Heartsentwined\\Cron\\Service\\Cron',
             array('getPending'))
@@ -131,15 +131,15 @@ class CronTest extends DoctrineTestcase
         // past + (not pending) and all future
 
         foreach (array(
-            $this->getJob(Repository\Job::STATUS_SUCCESS, time()-3600),
-            $this->getJob(Repository\Job::STATUS_RUNNING, time()-3600),
-            $this->getJob(Repository\Job::STATUS_MISSED, time()-3600),
-            $this->getJob(Repository\Job::STATUS_ERROR, time()-3600),
-            $this->getJob(Repository\Job::STATUS_PENDING, time()+3600),
-            $this->getJob(Repository\Job::STATUS_SUCCESS, time()+3600),
-            $this->getJob(Repository\Job::STATUS_RUNNING, time()+3600),
-            $this->getJob(Repository\Job::STATUS_MISSED, time()+3600),
-            $this->getJob(Repository\Job::STATUS_ERROR, time()+3600),
+            $this->getJob(Repository\Job::STATUS_SUCCESS, time()-100),
+            $this->getJob(Repository\Job::STATUS_RUNNING, time()-100),
+            $this->getJob(Repository\Job::STATUS_MISSED, time()-100),
+            $this->getJob(Repository\Job::STATUS_ERROR, time()-100),
+            $this->getJob(Repository\Job::STATUS_PENDING, time()+100),
+            $this->getJob(Repository\Job::STATUS_SUCCESS, time()+100),
+            $this->getJob(Repository\Job::STATUS_RUNNING, time()+100),
+            $this->getJob(Repository\Job::STATUS_MISSED, time()+100),
+            $this->getJob(Repository\Job::STATUS_ERROR, time()+100),
         ) as $job) {
             $prevStatus = $job->getStatus();
             $cron = $this->getMock(
@@ -165,7 +165,7 @@ class CronTest extends DoctrineTestcase
 
         // cron job throwing exceptions
 
-        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $cron = $this->getMock(
             'Heartsentwined\\Cron\\Service\\Cron',
             array('getPending'))
@@ -191,7 +191,7 @@ class CronTest extends DoctrineTestcase
 
         // too late for job
 
-        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $cron = $this->getMock(
             'Heartsentwined\\Cron\\Service\\Cron',
             array('getPending'))
@@ -215,7 +215,7 @@ class CronTest extends DoctrineTestcase
 
         // job not registered
 
-        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-3600);
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $cron = $this->getMock(
             'Heartsentwined\\Cron\\Service\\Cron',
             array('getPending'))
