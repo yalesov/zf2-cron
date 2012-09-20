@@ -25,29 +25,34 @@ class Job
     private $status;
 
     /**
-     * @var string $error
+     * @var string $errorMsg
      */
-    private $error;
+    private $errorMsg;
 
     /**
-     * @var \DateTime $create_time
+     * @var string $stackTrace
      */
-    private $create_time;
+    private $stackTrace;
 
     /**
-     * @var \DateTime $schedule_time
+     * @var \DateTime $createTime
      */
-    private $schedule_time;
+    private $createTime;
 
     /**
-     * @var \DateTime $execute_time
+     * @var \DateTime $scheduleTime
      */
-    private $execute_time;
+    private $scheduleTime;
 
     /**
-     * @var \DateTime $finish_time
+     * @var \DateTime $executeTime
      */
-    private $finish_time;
+    private $executeTime;
+
+    /**
+     * @var \DateTime $finishTime
+     */
+    private $finishTime;
 
 
     /**
@@ -107,117 +112,140 @@ class Job
     }
 
     /**
-     * Set error
+     * Set errorMsg
      *
-     * @param string $error
+     * @param string $errorMsg
      * @return Job
      */
-    public function setError($error)
+    public function setErrorMsg($errorMsg)
     {
-        $this->error = $error;
+        $this->errorMsg = $errorMsg;
     
         return $this;
     }
 
     /**
-     * Get error
+     * Get errorMsg
      *
      * @return string 
      */
-    public function getError()
+    public function getErrorMsg()
     {
-        return $this->error;
+        return $this->errorMsg;
     }
 
     /**
-     * Set create_time
+     * Set stackTrace
+     *
+     * @param string $stackTrace
+     * @return Job
+     */
+    public function setStackTrace($stackTrace)
+    {
+        $this->stackTrace = $stackTrace;
+    
+        return $this;
+    }
+
+    /**
+     * Get stackTrace
+     *
+     * @return string 
+     */
+    public function getStackTrace()
+    {
+        return $this->stackTrace;
+    }
+
+    /**
+     * Set createTime
      *
      * @param \DateTime $createTime
      * @return Job
      */
     public function setCreateTime($createTime)
     {
-        $this->create_time = $createTime;
+        $this->createTime = $createTime;
     
         return $this;
     }
 
     /**
-     * Get create_time
+     * Get createTime
      *
      * @return \DateTime 
      */
     public function getCreateTime()
     {
-        return $this->create_time;
+        return $this->createTime;
     }
 
     /**
-     * Set schedule_time
+     * Set scheduleTime
      *
      * @param \DateTime $scheduleTime
      * @return Job
      */
     public function setScheduleTime($scheduleTime)
     {
-        $this->schedule_time = $scheduleTime;
+        $this->scheduleTime = $scheduleTime;
     
         return $this;
     }
 
     /**
-     * Get schedule_time
+     * Get scheduleTime
      *
      * @return \DateTime 
      */
     public function getScheduleTime()
     {
-        return $this->schedule_time;
+        return $this->scheduleTime;
     }
 
     /**
-     * Set execute_time
+     * Set executeTime
      *
      * @param \DateTime $executeTime
      * @return Job
      */
     public function setExecuteTime($executeTime)
     {
-        $this->execute_time = $executeTime;
+        $this->executeTime = $executeTime;
     
         return $this;
     }
 
     /**
-     * Get execute_time
+     * Get executeTime
      *
      * @return \DateTime 
      */
     public function getExecuteTime()
     {
-        return $this->execute_time;
+        return $this->executeTime;
     }
 
     /**
-     * Set finish_time
+     * Set finishTime
      *
      * @param \DateTime $finishTime
      * @return Job
      */
     public function setFinishTime($finishTime)
     {
-        $this->finish_time = $finishTime;
+        $this->finishTime = $finishTime;
     
         return $this;
     }
 
     /**
-     * Get finish_time
+     * Get finishTime
      *
      * @return \DateTime 
      */
     public function getFinishTime()
     {
-        return $this->finish_time;
+        return $this->finishTime;
     }
 }

@@ -12,16 +12,19 @@ Heartsentwined\Cron\Entity\Job:
             type: string
         status:
             type: string
-        error:
+        errorMsg:
             type: text
             nullable: true
-        create_time:
+        stackTrace:
+            type: text
+            nullable: true
+        createTime:
             type: datetime
-        schedule_time:
+        scheduleTime:
             type: datetime
-        execute_time:
+        executeTime:
             type: datetime
             nullable: true
-        finish_time:
+        finishTime:
             type: datetime
             nullable: true

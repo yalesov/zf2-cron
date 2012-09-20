@@ -214,8 +214,8 @@ class Cron
             } catch (\Exception $e) {
                 $job
                     ->setStatus($errorStatus)
-                    ->setOutput($e->getMessage() . "\n"
-                        . $e->getTraceAsString());
+                    ->setErrorMsg($e->getMessage())
+                    ->setStackTrace($e->getTraceAsString());
             }
 
             $em->persist($job);
@@ -317,7 +317,8 @@ class Cron
                 < $now - $this->getMaxRunningTime() * 60) {
                 $job
                     ->setStatus('pending')
-                    ->setOutput(null)
+                    ->setErrorMsg(null)
+                    ->setStackTrace(null)
                     ->setScheduleTime(new \DateTime)
                     ->setExecuteTime(null);
             }
