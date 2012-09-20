@@ -107,6 +107,22 @@ class CronTest extends DoctrineTestcase
         );
     }
 
+    public function testResetPending()
+    {
+        // inject a job into pending queue
+        $this->getJob(Repository\Job::STATUS_PENDING, time());
+        $this->assertCount(1, $this->cron->getPending());
+
+        // clear it
+        $this->cron->resetPending();
+
+        $refl = new \ReflectionClass($this->cron);
+        $pendingProp = $refl->getProperty('pending');
+        $pendingProp->setAccessible(true);
+        $pending = $pendingProp->getValue($this->cron);
+        $this->assertNull($pending);
+    }
+
     public function testProcess()
     {
         $pastTimestamp = time()-100;
