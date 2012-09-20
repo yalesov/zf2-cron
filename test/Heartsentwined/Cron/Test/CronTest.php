@@ -428,5 +428,29 @@ class CronTest extends DoctrineTestcase
     public function testTryLockJob()
     {
         $now = time();
+
+        // 'pending' -> 'running'
+        $job = $this->getJob(Repository\Job::STATUS_PENDING, $now);
+        $this->assertTrue($this->cron->tryLockJob($job));
+        $this->assertSame(
+            Repository\Job::STATUS_RUNNING, $job->getStatus());
+
+        // 'running' -> (still 'running') but return false
+        $job = $this->getJob(Repository\Job::STATUS_RUNNING, $now);
+        $this->assertFalse($this->cron->tryLockJob($job));
+        $this->assertSame(
+            Repository\Job::STATUS_RUNNING, $job->getStatus());
+
+        // everything else -> retain origin status; return false
+        foreach (array(
+            $this->getJob(Repository\Job::STATUS_SUCCESS, $now),
+            $this->getJob(Repository\Job::STATUS_MISSED, $now),
+            $this->getJob(Repository\Job::STATUS_ERROR, $now),
+        ) as $job) {
+            $prevStatus = $job->getStatus();
+            $this->assertFalse($this->cron->tryLockJob($job));
+            $this->assertSame(
+                $prevStatus, $job->getStatus());
+        }
     }
 }
