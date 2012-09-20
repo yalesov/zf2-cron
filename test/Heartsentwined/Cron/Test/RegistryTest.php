@@ -3,16 +3,13 @@ namespace Heartsentwined\Cron\Test;
 
 use Heartsentwined\Cron\Entity;
 use Heartsentwined\Cron\Service\Registry;
-use Heartsentwined\Phpunit\Testcase\Doctrine as DoctrineTestcase;
+use Heartsentwined\Phpunit\Testcase\Zf as ZfTestcase;
 
-class RegistryTest extends DoctrineTestcase
+class RegistryTest extends ZfTestcase
 {
     public function setUp()
     {
-        $this
-            ->setBootstrap(__DIR__ . '/../../../../bootstrap.php')
-            ->setEmAlias('doctrine.entitymanager.orm_default')
-            ->setTmpDir('tmp');
+        $this->setBootstrap(__DIR__ . '/../../../../bootstrap.php');
         parent::setUp();
     }
 
@@ -20,17 +17,6 @@ class RegistryTest extends DoctrineTestcase
     {
         $instance = Registry::getInstance();
         $this->assertInstanceOf('Heartsentwined\Cron\Service\Registry', $instance);
-
-        $job = new Entity\Job;
-        $this->em->persist($job);
-        $job
-            ->setCode('test-job')
-            ->setStatus('pending')
-            ->setCreateTime(new \DateTime)
-            ->setScheduleTime(new \DateTime);
-        $this->em->flush();
-
-        $this->assertSame($job, $this->em->find('Heartsentwined\Cron\Entity\Job', 1));
     }
 
     public function testSingleton()

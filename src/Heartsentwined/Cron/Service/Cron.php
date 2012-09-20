@@ -24,7 +24,7 @@ class Cron
      *
      * @var int (minute)
      */
-    protected $scheduleAhead;
+    protected $scheduleAhead = 60;
     public function setScheduleAhead($scheduleAhead)
     {
         $this->scheduleAhead = $scheduleAhead;
@@ -40,7 +40,7 @@ class Cron
      *
      * @var int (minute)
      */
-    protected $scheduleLifetime;
+    protected $scheduleLifetime = 60;
     public function setScheduleLifetime($scheduleLifetime)
     {
         $this->scheduleLifetime = $scheduleLifetime;
@@ -56,7 +56,7 @@ class Cron
      *
      * @var int (minute)
      */
-    protected $maxRunningTime;
+    protected $maxRunningTime = 60;
     public function setMaxRunningTime($maxRunningTime)
     {
         $this->maxRunningTime = $maxRunningTime;
@@ -72,7 +72,7 @@ class Cron
      *
      * @var int (minute)
      */
-    protected $successLogLifetime;
+    protected $successLogLifetime = 300;
     public function setSuccessLogLifetime($successLogLifetime)
     {
         $this->successLogLifetime = $successLogLifetime;
@@ -88,7 +88,7 @@ class Cron
      *
      * @var int (minute)
      */
-    protected $failureLogLifetime;
+    protected $failureLogLifetime = 10080;
     public function setFailureLogLifetime($failureLogLifetime)
     {
         $this->failureLogLifetime = $failureLogLifetime;
@@ -120,15 +120,14 @@ class Cron
      *
      * @var array of Entity\Job
      */
-    protected $pendings;
-    public function getPendings()
+    protected $pending;
+    public function getPending()
     {
-        if (!$this->pendings) {
-            $repo = $this->getEm()->getRepository('Cron\Entity\Job');
-            $this->pendings = $repo->findBy(
-                array('status' => Repository\Job::STATUS_PENDING));
+        if (!$this->pending) {
+            $this->pending = $this->getEm()->getRepository('Heartsentwined\Cron\Entity\Job')
+                ->getPending();
         }
-        return $this->pendings;
+        return $this->pending;
     }
 
     /**
@@ -158,11 +157,11 @@ class Cron
     {
         $em = $this->getEm();
         $cronRegistry = Registry::getCronRegistry();
-        $pendings = $this->getPendings();
+        $pending = $this->getPending();
         $scheduleLifetime = $this->scheduleLifetime * 60; //convert min to sec
 
         $now = new \DateTime;
-        foreach ($pendings as $job) {
+        foreach ($pending as $job) {
             $scheduleTime = $job->getScheduleTime();
 
             if ($scheduleTime > $now) {
@@ -234,9 +233,9 @@ class Cron
     public function schedule()
     {
         $em = $this->getEm();
-        $pendings = $this->getPendings();
+        $pending = $this->getPending();
         $exists = array();
-        foreach ($pendings as $job) {
+        foreach ($pending as $job) {
             $identifier = $job->getCode();
             $identifier .= $job->getScheduleTime()->getTimeStamp();
             $exists[$identifier] = true;
@@ -290,7 +289,7 @@ class Cron
     public function cleanup()
     {
         $em = $this->getEm();
-        $repo = $em->getRepository('Cron\Entity\Job');
+        $repo = $em->getRepository('Heartsentwined\Cron\Entity\Job');
         $now = time();
 
         // remove old history
@@ -350,7 +349,7 @@ class Cron
     public function tryLockJob(Entity\Job $job)
     {
         $em = $this->getEm();
-        $repo = $em->getRepository('Cron\Entity\Job');
+        $repo = $em->getRepository('Heartsentwined\Cron\Entity\Job');
         if ($job->getStatus() === Repository\Job::STATUS_PENDING) {
             $job->setStatus(Repository\Job::STATUS_RUNNING);
             $em->persist($job);
