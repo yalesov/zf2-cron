@@ -132,7 +132,7 @@ foreach ($errorJobs as $job) {
         "cron job, code %s, executed at %s with error \n %s \n\n",
         $job->getCode(), // will always be 'foo' in this example
         $job->getExecuteTime()->format('r'),
-        $job->getError()
+        $job->getErrorMsg()
     );
 }
 ```
