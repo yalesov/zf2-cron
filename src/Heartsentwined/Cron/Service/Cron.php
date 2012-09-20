@@ -288,19 +288,26 @@ class Cron
     }
 
     /**
-     * delete old cron job logs; recover long-running cron jobs
+     * perform various cleanup work
      *
      * @return self
      */
     public function cleanup()
     {
+        $this
+            ->recoverRunning()
+            ->cleanLog();
+        return $this;
+    }
+
+    /**
+     * delete old cron job logs
+     *
+     * @return self
+     */
+    public function cleanLog()
+    {
         $em = $this->getEm();
-        $repo = $em->getRepository('Heartsentwined\Cron\Entity\Job');
-        $now = time();
-
-        // remove old history
-        $history = $repo->getHistory();
-
         $lifetime = array(
             Repository\Job::STATUS_SUCCESS  =>
                 $this->getSuccessLogLifetime() * 60,
@@ -310,20 +317,30 @@ class Cron
                 $this->getFailureLogLifetime() * 60,
         );
 
+        $history = $em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getHistory();
+
+        $now = time();
         foreach ($history as $job) {
-            if ($executeTime = $job->getExecuteTime()) {
-                if ($executeTime->getTimestamp()
+            if ($executeTime = $job->getExecuteTime()
+                && $executeTime->getTimestamp()
                     < $now - $lifetime[$job->getStatus()]) {
-                    $em->remove($job);
-                }
+                $em->remove($job);
             }
         }
 
-        // recover jobs running for too long
-        $running = $repo->getRunning();
+        return $this;
+    }
+
+    public function recoverRunning()
+    {
+        $em = $this->getEm();
+        $running = $em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->getRunning();
+        $expiryTime = time() - $this->getMaxRunningTime() * 60;
+
         foreach ($running as $job) {
-            if ($job->getExecuteTime()->getTimestamp()
-                < $now - $this->getMaxRunningTime() * 60) {
+            if ($job->getExecuteTime()->getTimestamp() < $expiryTime) {
                 $job
                     ->setStatus(Repository\Job::STATUS_PENDING)
                     ->setErrorMsg(null)
@@ -332,8 +349,6 @@ class Cron
                     ->setExecuteTime(null);
             }
         }
-
-        $em->flush();
 
         return $this;
     }
