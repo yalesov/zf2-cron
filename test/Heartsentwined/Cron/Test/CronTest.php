@@ -359,4 +359,60 @@ class CronTest extends DoctrineTestcase
 
         $this->assertSame($expected, $pending);
     }
+
+    public function testCleanLog()
+    {
+        $retain = array();
+        $pastTimestamp = time()-100;
+        $futureTimestamp = time()+100;
+        $past = \DateTime::createFromFormat('U', $pastTimestamp);
+        $future = \DateTime::createFromFormat('U', $futureTimestamp);
+
+        // only past + success/missed/error should be removed
+        foreach (array(
+            $this->getJob(Repository\Job::STATUS_SUCCESS, $pastTimestamp),
+            $this->getJob(Repository\Job::STATUS_MISSED, $pastTimestamp),
+            $this->getJob(Repository\Job::STATUS_ERROR, $pastTimestamp),
+        ) as $job) {
+            $job->setExecuteTime($past);
+        }
+        // retain past + pending/running
+        foreach (array(
+            $this->getJob(Repository\Job::STATUS_PENDING, $pastTimestamp),
+            $this->getJob(Repository\Job::STATUS_RUNNING, $pastTimestamp),
+        ) as $job) {
+            $job->setExecuteTime($past);
+            $retain[] = $job->getId();
+        }
+        // retain future
+        foreach (array(
+            $this->getJob(Repository\Job::STATUS_PENDING, $futureTimestamp),
+            $this->getJob(Repository\Job::STATUS_RUNNING, $futureTimestamp),
+            $this->getJob(Repository\Job::STATUS_SUCCESS, $futureTimestamp),
+            $this->getJob(Repository\Job::STATUS_MISSED, $futureTimestamp),
+            $this->getJob(Repository\Job::STATUS_ERROR, $futureTimestamp),
+        ) as $job) {
+            $job->setExecuteTime($future);
+            $retain[] = $job->getId();
+        }
+
+        $this->em->flush();
+
+        $this->cron
+            ->setSuccessLogLifetime(0)
+            ->setFailureLogLifetime(0)
+            ->setEm($this->em)
+            ->cleanLog();
+
+        $jobs = array();
+        foreach ($this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+            ->findAll() as $job) {
+            $jobs[] = $job->getId();
+        }
+
+        sort($retain);
+        sort($jobs);
+
+        $this->assertSame($retain, $jobs);
+    }
 }

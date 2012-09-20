@@ -346,14 +346,14 @@ class Cron
 
         $now = time();
         foreach ($history as $job) {
-            if ($executeTime = $job->getExecuteTime()
-                && $executeTime->getTimestamp()
+            if ($job->getExecuteTime()
+                && $job->getExecuteTime()->getTimestamp()
                     < $now - $lifetime[$job->getStatus()]) {
                 $em->remove($job);
             }
         }
 
-        $this->getEm()->flush();
+        $em->flush();
 
         return $this;
     }
