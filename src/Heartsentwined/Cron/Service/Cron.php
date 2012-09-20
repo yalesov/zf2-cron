@@ -308,7 +308,8 @@ class Cron
         $expiryTime = time() - $this->getMaxRunningTime() * 60;
 
         foreach ($running as $job) {
-            if ($job->getExecuteTime()->getTimestamp() < $expiryTime) {
+            if ($job->getExecuteTime()
+                && $job->getExecuteTime()->getTimestamp() < $expiryTime) {
                 $job
                     ->setStatus(Repository\Job::STATUS_PENDING)
                     ->setErrorMsg(null)
@@ -317,6 +318,8 @@ class Cron
                     ->setExecuteTime(null);
             }
         }
+
+        $this->getEm()->flush();
 
         return $this;
     }
@@ -349,6 +352,8 @@ class Cron
                 $em->remove($job);
             }
         }
+
+        $this->getEm()->flush();
 
         return $this;
     }

@@ -30,7 +30,7 @@ class CronTest extends DoctrineTestcase
 
     public function getDummy()
     {
-        $dummy = $this->getMockBuilder('Heartsentwined\\Cron\\Service\\Cron')
+        $dummy = $this->getMockBuilder('Heartsentwined\Cron\Service\Cron')
             ->disableOriginalConstructor()
             ->getMock();
         return $dummy;
@@ -55,7 +55,7 @@ class CronTest extends DoctrineTestcase
     public function testRun()
     {
         $cron = $this->getMock(
-            'Heartsentwined\\Cron\\Service\\Cron',
+            'Heartsentwined\Cron\Service\Cron',
             array('schedule', 'process', 'cleanup'));
 
         $cron
@@ -110,7 +110,7 @@ class CronTest extends DoctrineTestcase
 
         $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $cron = $this->getMock(
-            'Heartsentwined\\Cron\\Service\\Cron',
+            'Heartsentwined\Cron\Service\Cron',
             array('getPending'))
             ->setEm($this->em);
         $cron
@@ -144,7 +144,7 @@ class CronTest extends DoctrineTestcase
         ) as $job) {
             $prevStatus = $job->getStatus();
             $cron = $this->getMock(
-                'Heartsentwined\\Cron\\Service\\Cron',
+                'Heartsentwined\Cron\Service\Cron',
                 array('getPending'))
                 ->setEm($this->em);
             $cron
@@ -168,7 +168,7 @@ class CronTest extends DoctrineTestcase
 
         $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $cron = $this->getMock(
-            'Heartsentwined\\Cron\\Service\\Cron',
+            'Heartsentwined\Cron\Service\Cron',
             array('getPending'))
             ->setEm($this->em);
         $cron
@@ -194,7 +194,7 @@ class CronTest extends DoctrineTestcase
 
         $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $cron = $this->getMock(
-            'Heartsentwined\\Cron\\Service\\Cron',
+            'Heartsentwined\Cron\Service\Cron',
             array('getPending'))
             ->setScheduleLifetime(0)
             ->setEm($this->em);
@@ -218,7 +218,7 @@ class CronTest extends DoctrineTestcase
 
         $job = $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
         $cron = $this->getMock(
-            'Heartsentwined\\Cron\\Service\\Cron',
+            'Heartsentwined\Cron\Service\Cron',
             array('getPending'))
             ->setEm($this->em);
         $cron
@@ -300,7 +300,7 @@ class CronTest extends DoctrineTestcase
     public function testCleanup()
     {
         $cron = $this->getMock(
-            'Heartsentwined\\Cron\\Service\\Cron',
+            'Heartsentwined\Cron\Service\Cron',
             array('recoverRunning', 'cleanLog'));
 
         $cron
@@ -313,5 +313,50 @@ class CronTest extends DoctrineTestcase
             ->will($this->returnSelf());
 
         $cron->cleanup();
+    }
+
+    public function testRecoverRunning()
+    {
+        $jobPastPending =
+            $this->getJob(Repository\Job::STATUS_PENDING, time()-100);
+        $jobPastRunning =
+            $this->getJob(Repository\Job::STATUS_RUNNING, time()-100);
+        $jobFuturePending =
+            $this->getJob(Repository\Job::STATUS_PENDING, time()+100);
+        $jobFutureRunning =
+            $this->getJob(Repository\Job::STATUS_RUNNING, time()+100);
+
+        $this->getJob(Repository\Job::STATUS_SUCCESS, time()-100);
+        $this->getJob(Repository\Job::STATUS_MISSED, time()-100);
+        $this->getJob(Repository\Job::STATUS_ERROR, time()-100);
+        $this->getJob(Repository\Job::STATUS_SUCCESS, time()+100);
+        $this->getJob(Repository\Job::STATUS_MISSED, time()+100);
+        $this->getJob(Repository\Job::STATUS_ERROR, time()+100);
+
+        $jobPastRunning
+            ->setExecuteTime(\DateTime::createFromFormat('U', time()-100));
+        $jobFutureRunning
+            ->setExecuteTime(\DateTime::createFromFormat('U', time()+100));
+        $this->em->flush();
+
+        $this->cron
+            ->setMaxRunningTime(0)
+            ->setEm($this->em)
+            ->recoverRunning();
+
+        $pending = array();
+        foreach ($this->cron->getPending() as $job) {
+            $pending[] = $job->getId();
+        }
+
+        $expected = array(
+            $jobPastPending->getId(),
+            $jobPastRunning->getId(),
+            $jobFuturePending->getId(),
+        );
+        sort($expected);
+        sort($pending);
+
+        $this->assertSame($expected, $pending);
     }
 }
