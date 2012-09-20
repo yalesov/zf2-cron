@@ -296,4 +296,22 @@ class CronTest extends DoctrineTestcase
             ->getPending();
         $this->assertCount(12, $pending);
     }
+
+    public function testCleanup()
+    {
+        $cron = $this->getMock(
+            'Heartsentwined\\Cron\\Service\\Cron',
+            array('recoverRunning', 'cleanLog'));
+
+        $cron
+            ->expects($this->once())
+            ->method('recoverRunning')
+            ->will($this->returnSelf());
+        $cron
+            ->expects($this->once())
+            ->method('cleanLog')
+            ->will($this->returnSelf());
+
+        $cron->cleanup();
+    }
 }
