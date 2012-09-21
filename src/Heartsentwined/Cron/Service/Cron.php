@@ -118,6 +118,8 @@ class Cron
     /**
      * set of pending cron jobs
      *
+     * wrapped the Repo function here to implement a (crude) cache feature
+     *
      * @var array of Entity\Job
      */
     protected $pending;
