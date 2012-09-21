@@ -1,6 +1,6 @@
 Heartsentwined\Cron\Entity\Job:
     type: entity
-    table: cron_job
+    table: he_cron_job
     repositoryClass: Heartsentwined\Cron\Repository\Job
     fields:
         id:
