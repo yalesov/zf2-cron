@@ -9,7 +9,7 @@ class RegistryTest extends ZfTestcase
 {
     public function setUp()
     {
-        $this->setBootstrap(__DIR__ . '/../../../../bootstrap.php');
+        $this->setBootstrap(__DIR__ . '/../../../../../bootstrap.php');
         parent::setUp();
     }
 
