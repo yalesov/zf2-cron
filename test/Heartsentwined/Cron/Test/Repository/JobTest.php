@@ -3,8 +3,6 @@ namespace Heartsentwined\Cron\Test\Repository;
 
 use Heartsentwined\Cron\Entity;
 use Heartsentwined\Cron\Repository;
-use Heartsentwined\Cron\Service\Cron;
-use Heartsentwined\Cron\Service\Registry;
 use Heartsentwined\Phpunit\Testcase\Doctrine as DoctrineTestcase;
 
 class JobTest extends DoctrineTestcase
