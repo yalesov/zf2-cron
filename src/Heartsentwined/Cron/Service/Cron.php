@@ -126,7 +126,8 @@ class Cron
     public function getPending()
     {
         if (!$this->pending) {
-            $this->pending = $this->getEm()->getRepository('Heartsentwined\Cron\Entity\Job')
+            $this->pending = $this->getEm()
+                ->getRepository('Heartsentwined\Cron\Entity\Job')
                 ->getPending();
         }
         return $this->pending;
