@@ -37,6 +37,7 @@ class CronController extends AbstractActionController
         $response = $this->getResponse();
         if (!$response instanceof ConsoleResponse) {
             $response->setStatusCode(200);
+
             return $response;
         }
     }

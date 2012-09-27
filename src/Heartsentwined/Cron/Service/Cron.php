@@ -1,7 +1,6 @@
 <?php
 namespace Heartsentwined\Cron\Service;
 
-use Heartsentwined\ArgValidator\ArgValidator;
 use Heartsentwined\Cron\Entity;
 use Heartsentwined\Cron\Exception;
 use Heartsentwined\Cron\Repository;
@@ -28,6 +27,7 @@ class Cron
     public function setScheduleAhead($scheduleAhead)
     {
         $this->scheduleAhead = $scheduleAhead;
+
         return $this;
     }
     public function getScheduleAhead()
@@ -44,6 +44,7 @@ class Cron
     public function setScheduleLifetime($scheduleLifetime)
     {
         $this->scheduleLifetime = $scheduleLifetime;
+
         return $this;
     }
     public function getScheduleLifeTime()
@@ -60,6 +61,7 @@ class Cron
     public function setMaxRunningTime($maxRunningTime)
     {
         $this->maxRunningTime = $maxRunningTime;
+
         return $this;
     }
     public function getMaxRunningtime()
@@ -76,6 +78,7 @@ class Cron
     public function setSuccessLogLifetime($successLogLifetime)
     {
         $this->successLogLifetime = $successLogLifetime;
+
         return $this;
     }
     public function getSuccessLogLifetime()
@@ -92,6 +95,7 @@ class Cron
     public function setFailureLogLifetime($failureLogLifetime)
     {
         $this->failureLogLifetime = $failureLogLifetime;
+
         return $this;
     }
     public function getFailureLogLifetime()
@@ -108,6 +112,7 @@ class Cron
     public function setEm(EntityManager $em)
     {
         $this->em = $em;
+
         return $this;
     }
     public function getEm()
@@ -130,11 +135,13 @@ class Cron
                 ->getRepository('Heartsentwined\Cron\Entity\Job')
                 ->getPending();
         }
+
         return $this->pending;
     }
     public function resetPending()
     {
         $this->pending = null;
+
         return $this;
     }
 
@@ -153,6 +160,7 @@ class Cron
             ->schedule()
             ->process()
             ->cleanup();
+
         return $this;
     }
 
@@ -300,6 +308,7 @@ class Cron
         $this
             ->recoverRunning()
             ->cleanLog();
+
         return $this;
     }
 
@@ -376,7 +385,7 @@ class Cron
      *
      * set a job to 'running' only if it is currently 'pending'
      *
-     * @param Entity\Job $job
+     * @param  Entity\Job $job
      * @return bool
      */
     public function tryLockJob(Entity\Job $job)

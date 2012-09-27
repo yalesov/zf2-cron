@@ -33,6 +33,7 @@ class CronTest extends DoctrineTestcase
         $dummy = $this->getMockBuilder('Heartsentwined\Cron\Service\Cron')
             ->disableOriginalConstructor()
             ->getMock();
+
         return $dummy;
     }
 

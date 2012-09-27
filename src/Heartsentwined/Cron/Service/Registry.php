@@ -21,6 +21,7 @@ class Registry
         if (!self::$instance instanceof self) {
             self::$instance = new self;
         }
+
         return self::$instance;
     }
 
@@ -44,11 +45,13 @@ class Registry
     {
         $instance = self::getInstance();
         $instance->cronRegistry = $cronRegistry;
+
         return $instance;
     }
     public static function getCronRegistry()
     {
         $instance = self::getInstance();
+
         return $instance->cronRegistry;
     }
 
@@ -57,10 +60,10 @@ class Registry
      *
      * @see Cron::trySchedule() for allowed cron expression syntax
      *
-     * @param string    $code       the cron job code / identifier
-     * @param string    $frequency  cron expression
-     * @param callable  $callback   the actual cron job
-     * @param array     $args       args to the cron job
+     * @param  string   $code      the cron job code / identifier
+     * @param  string   $frequency cron expression
+     * @param  callable $callback  the actual cron job
+     * @param  array    $args      args to the cron job
      * @return self
      */
     public static function register(

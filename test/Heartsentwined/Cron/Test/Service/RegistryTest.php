@@ -1,7 +1,6 @@
 <?php
 namespace Heartsentwined\Cron\Test;
 
-use Heartsentwined\Cron\Entity;
 use Heartsentwined\Cron\Service\Registry;
 use Heartsentwined\Phpunit\Testcase\Zf as ZfTestcase;
 

@@ -2,8 +2,6 @@
 
 namespace Heartsentwined\Cron\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Heartsentwined\Cron\Entity\Job
  */
@@ -54,11 +52,10 @@ class Job
      */
     private $finishTime;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -68,20 +65,20 @@ class Job
     /**
      * Set code
      *
-     * @param string $code
+     * @param  string $code
      * @return Job
      */
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -91,20 +88,20 @@ class Job
     /**
      * Set status
      *
-     * @param string $status
+     * @param  string $status
      * @return Job
      */
     public function setStatus($status)
     {
         $this->status = $status;
-    
+
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return string 
+     * @return string
      */
     public function getStatus()
     {
@@ -114,20 +111,20 @@ class Job
     /**
      * Set errorMsg
      *
-     * @param string $errorMsg
+     * @param  string $errorMsg
      * @return Job
      */
     public function setErrorMsg($errorMsg)
     {
         $this->errorMsg = $errorMsg;
-    
+
         return $this;
     }
 
     /**
      * Get errorMsg
      *
-     * @return string 
+     * @return string
      */
     public function getErrorMsg()
     {
@@ -137,20 +134,20 @@ class Job
     /**
      * Set stackTrace
      *
-     * @param string $stackTrace
+     * @param  string $stackTrace
      * @return Job
      */
     public function setStackTrace($stackTrace)
     {
         $this->stackTrace = $stackTrace;
-    
+
         return $this;
     }
 
     /**
      * Get stackTrace
      *
-     * @return string 
+     * @return string
      */
     public function getStackTrace()
     {
@@ -160,20 +157,20 @@ class Job
     /**
      * Set createTime
      *
-     * @param \DateTime $createTime
+     * @param  \DateTime $createTime
      * @return Job
      */
     public function setCreateTime($createTime)
     {
         $this->createTime = $createTime;
-    
+
         return $this;
     }
 
     /**
      * Get createTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreateTime()
     {
@@ -183,20 +180,20 @@ class Job
     /**
      * Set scheduleTime
      *
-     * @param \DateTime $scheduleTime
+     * @param  \DateTime $scheduleTime
      * @return Job
      */
     public function setScheduleTime($scheduleTime)
     {
         $this->scheduleTime = $scheduleTime;
-    
+
         return $this;
     }
 
     /**
      * Get scheduleTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getScheduleTime()
     {
@@ -206,20 +203,20 @@ class Job
     /**
      * Set executeTime
      *
-     * @param \DateTime $executeTime
+     * @param  \DateTime $executeTime
      * @return Job
      */
     public function setExecuteTime($executeTime)
     {
         $this->executeTime = $executeTime;
-    
+
         return $this;
     }
 
     /**
      * Get executeTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExecuteTime()
     {
@@ -229,20 +226,20 @@ class Job
     /**
      * Set finishTime
      *
-     * @param \DateTime $finishTime
+     * @param  \DateTime $finishTime
      * @return Job
      */
     public function setFinishTime($finishTime)
     {
         $this->finishTime = $finishTime;
-    
+
         return $this;
     }
 
     /**
      * Get finishTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFinishTime()
     {
