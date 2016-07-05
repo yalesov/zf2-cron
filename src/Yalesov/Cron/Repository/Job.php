@@ -1,6 +1,6 @@
 <?php
 
-namespace Heartsentwined\Cron\Repository;
+namespace Yalesov\Cron\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -21,13 +21,13 @@ class Job extends EntityRepository
     /**
      * get pending cron jobs
      *
-     * @return array of \Heartsentwined\Cron\Entity\Job
+     * @return array of \Yalesov\Cron\Entity\Job
      */
     public function getPending()
     {
         $dqb = $this->_em->createQueryBuilder();
         $dqb->select(array('j'))
-            ->from('Heartsentwined\Cron\Entity\Job', 'j')
+            ->from('Yalesov\Cron\Entity\Job', 'j')
             ->where($dqb->expr()->in('j.status', array(self::STATUS_PENDING)))
             ->orderBy('j.scheduleTime', 'ASC');
 
@@ -37,13 +37,13 @@ class Job extends EntityRepository
     /**
      * get running cron jobs
      *
-     * @return array of \Heartsentwined\Cron\Entity\Job
+     * @return array of \Yalesov\Cron\Entity\Job
      */
     public function getRunning()
     {
         $dqb = $this->_em->createQueryBuilder();
         $dqb->select(array('j'))
-            ->from('Heartsentwined\Cron\Entity\Job', 'j')
+            ->from('Yalesov\Cron\Entity\Job', 'j')
             ->where($dqb->expr()->in('j.status', array(self::STATUS_RUNNING)))
             ->orderBy('j.scheduleTime', 'ASC');
 
@@ -53,13 +53,13 @@ class Job extends EntityRepository
     /**
      * get completed cron jobs
      *
-     * @return array of \Heartsentwined\Cron\Entity\Job
+     * @return array of \Yalesov\Cron\Entity\Job
      */
     public function getHistory()
     {
         $dqb = $this->_em->createQueryBuilder();
         $dqb->select(array('j'))
-            ->from('Heartsentwined\Cron\Entity\Job', 'j')
+            ->from('Yalesov\Cron\Entity\Job', 'j')
             ->where($dqb->expr()->in('j.status', array(
                 self::STATUS_SUCCESS, self::STATUS_MISSED, self::STATUS_ERROR,
             )))

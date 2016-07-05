@@ -1,7 +1,7 @@
 <?php
-namespace Heartsentwined\Cron\Controller;
+namespace Yalesov\Cron\Controller;
 
-use Heartsentwined\BackgroundExec\BackgroundExec;
+use Yalesov\BackgroundExec\BackgroundExec;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Console\Response as ConsoleResponse;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -9,7 +9,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 /**
  * Cron controller
  *
- * @author heartsentwined <heartsentwined@cogito-lab.com>
+ * @author yalesov <yalesov@cogito-lab.com>
  * @license GPL http://opensource.org/licenses/gpl-license.php
  */
 class CronController extends AbstractActionController

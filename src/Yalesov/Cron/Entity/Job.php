@@ -1,9 +1,9 @@
 <?php
 
-namespace Heartsentwined\Cron\Entity;
+namespace Yalesov\Cron\Entity;
 
 /**
- * Heartsentwined\Cron\Entity\Job
+ * Yalesov\Cron\Entity\Job
  */
 class Job
 {

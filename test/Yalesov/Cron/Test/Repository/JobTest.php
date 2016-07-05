@@ -1,9 +1,9 @@
 <?php
-namespace Heartsentwined\Cron\Test\Repository;
+namespace Yalesov\Cron\Test\Repository;
 
-use Heartsentwined\Cron\Entity;
-use Heartsentwined\Cron\Repository;
-use Heartsentwined\Phpunit\Testcase\Doctrine as DoctrineTestcase;
+use Yalesov\Cron\Entity;
+use Yalesov\Cron\Repository;
+use Yalesov\Phpunit\Testcase\Doctrine as DoctrineTestcase;
 
 class JobTest extends DoctrineTestcase
 {
@@ -16,7 +16,7 @@ class JobTest extends DoctrineTestcase
         parent::setUp();
 
         $this->repo =
-            $this->em->getRepository('Heartsentwined\Cron\Entity\Job');
+            $this->em->getRepository('Yalesov\Cron\Entity\Job');
     }
 
     public function getJob($status)

@@ -1,7 +1,7 @@
-Heartsentwined\Cron\Entity\Job:
+Yalesov\Cron\Entity\Job:
     type: entity
     table: he_cron_job
-    repositoryClass: Heartsentwined\Cron\Repository\Job
+    repositoryClass: Yalesov\Cron\Repository\Job
     fields:
         id:
             id: true

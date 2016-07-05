@@ -1,7 +1,7 @@
 di:
     instance:
         alias:
-            cron: Heartsentwined\Cron\Service\Cron
+            cron: Yalesov\Cron\Service\Cron
         cron:
             parameters:
                 #em: doctrine.entitymanager.orm_default
@@ -17,13 +17,13 @@ doctrine:
             class: Doctrine\ORM\Mapping\Driver\YamlDriver
             cache: array
             paths:
-                - __DIR__/../src/Heartsentwined/Cron/Entity/Mapping
+                - __DIR__/../src/Yalesov/Cron/Entity/Mapping
         orm_default:
             drivers:
-                Heartsentwined\Cron\Entity: cron_driver
+                Yalesov\Cron\Entity: cron_driver
 controllers:
     invokables:
-        Heartsentwined\Cron\Controller\Cron: Heartsentwined\Cron\Controller\CronController
+        Yalesov\Cron\Controller\Cron: Yalesov\Cron\Controller\CronController
 console:
     router:
         routes:
@@ -31,7 +31,7 @@ console:
                 options:
                     route: cron
                     defaults:
-                        controller: Heartsentwined\Cron\Controller\Cron
+                        controller: Yalesov\Cron\Controller\Cron
                         action: index
 # backup: allow browser calling cron, in case cli cannot run
 router:
@@ -41,7 +41,7 @@ router:
             options:
                 route: /cron
                 defaults:
-                    __NAMESPACE__: Heartsentwined\Cron\Controller
+                    __NAMESPACE__: Yalesov\Cron\Controller
                     controller: Cron
                     action: index
             may_terminate: true

@@ -1,6 +1,6 @@
 # zf2-cron
 
-[![Build Status](https://secure.travis-ci.org/heartsentwined/zf2-cron.png)](http://travis-ci.org/heartsentwined/zf2-cron)
+[![Build Status](https://secure.travis-ci.org/yalesov/zf2-cron.png)](http://travis-ci.org/yalesov/zf2-cron)
 
 ZF2 cron module
 
@@ -13,14 +13,14 @@ This module serves as a central cron runner. It allows you to register a cron jo
 ```json
 {
     "require": {
-        "heartsentwined/zf2-cron": "2.*"
+        "yalesov/zf2-cron": "2.*"
     }
 }
 ```
 
-Then add `Heartsentwined\Cron` to the `modules` key in `(app root)/config/application.config.*`
+Then add `Yalesov\Cron` to the `modules` key in `(app root)/config/application.config.*`
 
-Cron module will also hook onto your application's database, through [`DoctrineORMModule`](https://github.com/doctrine/DoctrineORMModule). It will create a single table, `he_cron_job`, and will use the default EntityManager `doctrine.entitymanager.orm_default`. If your settings are different, please modify the `doctrine` section of `config/module.config.yml` and instances of `doctrine.entitymanager.orm_default` in `Heartsentwined\Cron\Controller\CronController` as needed.
+Cron module will also hook onto your application's database, through [`DoctrineORMModule`](https://github.com/doctrine/DoctrineORMModule). It will create a single table, `he_cron_job`, and will use the default EntityManager `doctrine.entitymanager.orm_default`. If your settings are different, please modify the `doctrine` section of `config/module.config.yml` and instances of `doctrine.entitymanager.orm_default` in `Yalesov\Cron\Controller\CronController` as needed.
 
 Finally, you need to update your database schema. The recommended way is through Doctrine's CLI:
 
@@ -56,7 +56,7 @@ Copy `config/cron.local.php.dist` to `(app root)/config/autoload/cron.local.php`
 Run `Foo::runCron('bar', 'baz')` every 15 minutes, with the identifier `foo`.
 
 ```php
-use Heartsentwined\Cron\Service\Cron;
+use Yalesov\Cron\Service\Cron;
 Cron::register(
     'foo',
     '*/15 * * * *',
@@ -107,7 +107,7 @@ Security: this will **not** expose any of your cron data or error outputs to any
 
 ## Retrieving logs; advanced use cases
 
-You can interact with individual cron jobs through the Doctrine 2 ORM API. The Cron module only defines a single Entity `Heartsentwined\Cron\Entity\Job`:
+You can interact with individual cron jobs through the Doctrine 2 ORM API. The Cron module only defines a single Entity `Yalesov\Cron\Entity\Job`:
 
 - `id`: unique identifier for individual cron jobs
 - `code`: cron job "batch/family" identifier, as set in `Cron::register()`
@@ -123,9 +123,9 @@ Example: retrieve all error messages of the cron job `foo`:
 
 ```php
 // $em instance of EntityManager
-$errorJobs = $em->getRepository('Heartsentwined\Cron\Entity\Job')->findBy(array(
+$errorJobs = $em->getRepository('Yalesov\Cron\Entity\Job')->findBy(array(
     'code'   => 'foo',
-    'status' => \Heartsentwined\Cron\Repository\Job::STATUS_ERROR,
+    'status' => \Yalesov\Cron\Repository\Job::STATUS_ERROR,
 ));
 foreach ($errorJobs as $job) {
     echo sprintf(

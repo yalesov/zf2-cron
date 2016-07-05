@@ -1,11 +1,11 @@
 <?php
-namespace Heartsentwined\Cron\Test\Service;
+namespace Yalesov\Cron\Test\Service;
 
-use Heartsentwined\Cron\Entity;
-use Heartsentwined\Cron\Repository;
-use Heartsentwined\Cron\Service\Cron;
-use Heartsentwined\Cron\Service\Registry;
-use Heartsentwined\Phpunit\Testcase\Doctrine as DoctrineTestcase;
+use Yalesov\Cron\Entity;
+use Yalesov\Cron\Repository;
+use Yalesov\Cron\Service\Cron;
+use Yalesov\Cron\Service\Registry;
+use Yalesov\Phpunit\Testcase\Doctrine as DoctrineTestcase;
 
 class CronTest extends DoctrineTestcase
 {
@@ -30,7 +30,7 @@ class CronTest extends DoctrineTestcase
 
     public function getDummy()
     {
-        $dummy = $this->getMockBuilder('Heartsentwined\Cron\Service\Cron')
+        $dummy = $this->getMockBuilder('Yalesov\Cron\Service\Cron')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -56,7 +56,7 @@ class CronTest extends DoctrineTestcase
     public function testRun()
     {
         $cron = $this->getMock(
-            'Heartsentwined\Cron\Service\Cron',
+            'Yalesov\Cron\Service\Cron',
             array('schedule', 'process', 'cleanup'));
 
         $cron
@@ -98,7 +98,7 @@ class CronTest extends DoctrineTestcase
         // only past should run
         $job = $this->getJob(Repository\Job::STATUS_PENDING, $past);
         $cron = $this->getMock(
-            'Heartsentwined\Cron\Service\Cron',
+            'Yalesov\Cron\Service\Cron',
             array('getPending'))
             ->setEm($this->em);
         $cron
@@ -120,7 +120,7 @@ class CronTest extends DoctrineTestcase
         // future should not run
         $job = $this->getJob(Repository\Job::STATUS_PENDING, time()+100);
         $cron = $this->getMock(
-            'Heartsentwined\Cron\Service\Cron',
+            'Yalesov\Cron\Service\Cron',
             array('getPending'))
             ->setEm($this->em);
         $cron
@@ -143,7 +143,7 @@ class CronTest extends DoctrineTestcase
 
         $job = $this->getJob(Repository\Job::STATUS_PENDING, $past);
         $cron = $this->getMock(
-            'Heartsentwined\Cron\Service\Cron',
+            'Yalesov\Cron\Service\Cron',
             array('getPending'))
             ->setEm($this->em);
         $cron
@@ -169,7 +169,7 @@ class CronTest extends DoctrineTestcase
 
         $job = $this->getJob(Repository\Job::STATUS_PENDING, $past);
         $cron = $this->getMock(
-            'Heartsentwined\Cron\Service\Cron',
+            'Yalesov\Cron\Service\Cron',
             array('getPending'))
             ->setScheduleLifetime(0)
             ->setEm($this->em);
@@ -193,7 +193,7 @@ class CronTest extends DoctrineTestcase
 
         $job = $this->getJob(Repository\Job::STATUS_PENDING, $past);
         $cron = $this->getMock(
-            'Heartsentwined\Cron\Service\Cron',
+            'Yalesov\Cron\Service\Cron',
             array('getPending'))
             ->setEm($this->em);
         $cron
@@ -226,14 +226,14 @@ class CronTest extends DoctrineTestcase
             'time', '*/15 * * * *', array($dummy, 'run'), array());
 
         // pending job set should be empty before calling schedule
-        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+        $pending = $this->em->getRepository('Yalesov\Cron\Entity\Job')
             ->getPending();
         $this->assertCount(0, $pending);
 
         $this->cron
             ->resetPending()
             ->schedule();
-        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+        $pending = $this->em->getRepository('Yalesov\Cron\Entity\Job')
             ->getPending();
         $this->assertCount(4, $pending);
 
@@ -241,7 +241,7 @@ class CronTest extends DoctrineTestcase
         $this->cron
             ->resetPending()
             ->schedule();
-        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+        $pending = $this->em->getRepository('Yalesov\Cron\Entity\Job')
             ->getPending();
         $this->assertCount(4, $pending);
 
@@ -250,7 +250,7 @@ class CronTest extends DoctrineTestcase
             ->setScheduleAhead(120)
             ->resetPending()
             ->schedule();
-        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+        $pending = $this->em->getRepository('Yalesov\Cron\Entity\Job')
             ->getPending();
         $this->assertCount(8, $pending);
 
@@ -259,7 +259,7 @@ class CronTest extends DoctrineTestcase
             'time2', '*/30 * * * *', array($dummy, 'run'), array());
 
         // pending job set should not have changed yet
-        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+        $pending = $this->em->getRepository('Yalesov\Cron\Entity\Job')
             ->getPending();
         $this->assertCount(8, $pending);
 
@@ -267,7 +267,7 @@ class CronTest extends DoctrineTestcase
         $this->cron
             ->resetPending()
             ->schedule();
-        $pending = $this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+        $pending = $this->em->getRepository('Yalesov\Cron\Entity\Job')
             ->getPending();
         $this->assertCount(12, $pending);
     }
@@ -275,7 +275,7 @@ class CronTest extends DoctrineTestcase
     public function testCleanup()
     {
         $cron = $this->getMock(
-            'Heartsentwined\Cron\Service\Cron',
+            'Yalesov\Cron\Service\Cron',
             array('recoverRunning', 'cleanLog'));
 
         $cron
@@ -383,7 +383,7 @@ class CronTest extends DoctrineTestcase
             ->cleanLog();
 
         $jobs = array();
-        foreach ($this->em->getRepository('Heartsentwined\Cron\Entity\Job')
+        foreach ($this->em->getRepository('Yalesov\Cron\Entity\Job')
             ->findAll() as $job) {
             $jobs[] = $job->getId();
         }

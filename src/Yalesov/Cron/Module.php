@@ -1,14 +1,14 @@
 <?php
-namespace Heartsentwined\Cron;
+namespace Yalesov\Cron;
 
-use Heartsentwined\Yaml\Yaml;
+use Yalesov\Yaml\Yaml;
 use Zend\EventManager\Event;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 
 /**
  * Cron module
  *
- * @author heartsentwined <heartsentwined@cogito-lab.com>
+ * @author yalesov <yalesov@cogito-lab.com>
  * @license GPL http://opensource.org/licenses/gpl-license.php
  */
 class Module implements AutoloaderProviderInterface

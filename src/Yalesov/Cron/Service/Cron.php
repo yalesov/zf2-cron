@@ -1,11 +1,11 @@
 <?php
-namespace Heartsentwined\Cron\Service;
+namespace Yalesov\Cron\Service;
 
-use Heartsentwined\Cron\Entity;
-use Heartsentwined\Cron\Exception;
-use Heartsentwined\Cron\Repository;
-use Heartsentwined\Cron\Service\Registry;
-use Heartsentwined\CronExprParser\Parser;
+use Yalesov\Cron\Entity;
+use Yalesov\Cron\Exception;
+use Yalesov\Cron\Repository;
+use Yalesov\Cron\Service\Registry;
+use Yalesov\CronExprParser\Parser;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManager;
  *
  * handle cron job registration, validation, scheduling, running, and cleanup
  *
- * @author heartsentwined <heartsentwined@cogito-lab.com>
+ * @author yalesov <yalesov@cogito-lab.com>
  * @license GPL http://opensource.org/licenses/gpl-license.php
  */
 class Cron
@@ -132,7 +132,7 @@ class Cron
     {
         if (!$this->pending) {
             $this->pending = $this->getEm()
-                ->getRepository('Heartsentwined\Cron\Entity\Job')
+                ->getRepository('Yalesov\Cron\Entity\Job')
                 ->getPending();
         }
 
@@ -315,7 +315,7 @@ class Cron
     public function recoverRunning()
     {
         $em = $this->getEm();
-        $running = $em->getRepository('Heartsentwined\Cron\Entity\Job')
+        $running = $em->getRepository('Yalesov\Cron\Entity\Job')
             ->getRunning();
         $expiryTime = time() - $this->getMaxRunningTime() * 60;
 
@@ -353,7 +353,7 @@ class Cron
                 $this->getFailureLogLifetime() * 60,
         );
 
-        $history = $em->getRepository('Heartsentwined\Cron\Entity\Job')
+        $history = $em->getRepository('Yalesov\Cron\Entity\Job')
             ->getHistory();
 
         $now = time();
@@ -391,7 +391,7 @@ class Cron
     public function tryLockJob(Entity\Job $job)
     {
         $em = $this->getEm();
-        $repo = $em->getRepository('Heartsentwined\Cron\Entity\Job');
+        $repo = $em->getRepository('Yalesov\Cron\Entity\Job');
         if ($job->getStatus() === Repository\Job::STATUS_PENDING) {
             $job->setStatus(Repository\Job::STATUS_RUNNING);
             $em->persist($job);

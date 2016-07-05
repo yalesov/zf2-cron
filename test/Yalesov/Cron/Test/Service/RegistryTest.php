@@ -1,8 +1,8 @@
 <?php
-namespace Heartsentwined\Cron\Test;
+namespace Yalesov\Cron\Test;
 
-use Heartsentwined\Cron\Service\Registry;
-use Heartsentwined\Phpunit\Testcase\Zf as ZfTestcase;
+use Yalesov\Cron\Service\Registry;
+use Yalesov\Phpunit\Testcase\Zf as ZfTestcase;
 
 class RegistryTest extends ZfTestcase
 {
@@ -15,7 +15,7 @@ class RegistryTest extends ZfTestcase
     public function testInstance()
     {
         $instance = Registry::getInstance();
-        $this->assertInstanceOf('Heartsentwined\Cron\Service\Registry', $instance);
+        $this->assertInstanceOf('Yalesov\Cron\Service\Registry', $instance);
     }
 
     public function testSingleton()

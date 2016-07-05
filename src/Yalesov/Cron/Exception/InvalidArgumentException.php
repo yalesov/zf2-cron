@@ -1,12 +1,12 @@
 <?php
-namespace Heartsentwined\Cron\Exception;
+namespace Yalesov\Cron\Exception;
 
-use Heartsentwined\Cron\ExceptionInterface;
+use Yalesov\Cron\ExceptionInterface;
 
 /**
  * InvalidArgumentException
  *
- * @author heartsentwined <heartsentwined@cogito-lab.com>
+ * @author yalesov <yalesov@cogito-lab.com>
  * @license GPL http://opensource.org/licenses/gpl-license.php
  */
 class InvalidArgumentException

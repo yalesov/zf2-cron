@@ -1,10 +1,10 @@
 <?php
-namespace Heartsentwined\Cron;
+namespace Yalesov\Cron;
 
 /**
  * ExceptionInterface
  *
- * @author heartsentwined <heartsentwined@cogito-lab.com>
+ * @author yalesov <yalesov@cogito-lab.com>
  * @license GPL http://opensource.org/licenses/gpl-license.php
  */
 interface ExceptionInterface

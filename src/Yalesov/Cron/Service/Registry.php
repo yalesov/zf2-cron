@@ -1,12 +1,12 @@
 <?php
-namespace Heartsentwined\Cron\Service;
+namespace Yalesov\Cron\Service;
 
-use Heartsentwined\ArgValidator\ArgValidator;
+use Yalesov\ArgValidator\ArgValidator;
 
 /**
  * registry for all cron jobs
  *
- * @author heartsentwined <heartsentwined@cogito-lab.com>
+ * @author yalesov <yalesov@cogito-lab.com>
  * @license GPL http://opensource.org/licenses/gpl-license.php
  */
 class Registry
