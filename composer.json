@@ -19,6 +19,7 @@
         "yalesov/cron-expr-parser": "2.*"
     },
     "require-dev": {
+        "phpunit/phpunit": "*",
         "yalesov/zf2-phpunit-testcase": "2.*",
         "yalesov/zf2-phing-task": "2.*"
     },
