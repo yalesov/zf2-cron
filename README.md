@@ -1,6 +1,6 @@
 # zf2-cron
 
-[![Build Status](https://secure.travis-ci.org/yalesov/zf2-cron.png)](http://travis-ci.org/yalesov/zf2-cron)
+[![Build Status](https://travis-ci.org/yalesov/zf2-cron.svg)](https://travis-ci.org/yalesov/zf2-cron)
 
 ZF2 cron module
 
