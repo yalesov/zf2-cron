@@ -11,16 +11,16 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "yalesov/yaml": "1.*",
+        "yalesov/yaml": "2.*",
         "zendframework/zendframework": "2.*",
-        "yalesov/arg-validator": "1.*",
-        "yalesov/background-exec": "1.*",
-        "yalesov/zf2-doctrine": "1.*",
-        "yalesov/cron-expr-parser": "1.*"
+        "yalesov/arg-validator": "2.*",
+        "yalesov/background-exec": "2.*",
+        "yalesov/zf2-doctrine": "2.*",
+        "yalesov/cron-expr-parser": "2.*"
     },
     "require-dev": {
-        "yalesov/zf2-phpunit-testcase": "1.*",
-        "yalesov/zf2-phing-task": "1.*"
+        "yalesov/zf2-phpunit-testcase": "2.*",
+        "yalesov/zf2-phing-task": "2.*"
     },
     "autoload": {
         "psr-0": {

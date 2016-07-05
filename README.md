@@ -13,7 +13,7 @@ This module serves as a central cron runner. It allows you to register a cron jo
 ```json
 {
     "require": {
-        "yalesov/zf2-cron": "2.*"
+        "yalesov/zf2-cron": "3.*"
     }
 }
 ```
