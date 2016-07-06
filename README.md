@@ -12,9 +12,9 @@ This module serves as a central cron runner. It allows you to register a cron jo
 
 ```json
 {
-    "require": {
-        "yalesov/zf2-cron": "3.*"
-    }
+  "require": {
+    "yalesov/zf2-cron": "3.*"
+  }
 }
 ```
 
@@ -58,10 +58,10 @@ Run `Foo::runCron('bar', 'baz')` every 15 minutes, with the identifier `foo`.
 ```php
 use Yalesov\Cron\Service\Cron;
 Cron::register(
-    'foo',
-    '*/15 * * * *',
-    'Foo::runCron',
-    array('bar', 'baz')
+  'foo',
+  '*/15 * * * *',
+  'Foo::runCron',
+  array('bar', 'baz')
 );
 ```
 
@@ -124,15 +124,15 @@ Example: retrieve all error messages of the cron job `foo`:
 ```php
 // $em instance of EntityManager
 $errorJobs = $em->getRepository('Yalesov\Cron\Entity\Job')->findBy(array(
-    'code'   => 'foo',
-    'status' => \Yalesov\Cron\Repository\Job::STATUS_ERROR,
+  'code'   => 'foo',
+  'status' => \Yalesov\Cron\Repository\Job::STATUS_ERROR,
 ));
 foreach ($errorJobs as $job) {
-    echo sprintf(
-        "cron job, code %s, executed at %s with error \n %s \n\n",
-        $job->getCode(), // will always be 'foo' in this example
-        $job->getExecuteTime()->format('r'),
-        $job->getErrorMsg()
-    );
+  echo sprintf(
+    "cron job, code %s, executed at %s with error \n %s \n\n",
+    $job->getCode(), // will always be 'foo' in this example
+    $job->getExecuteTime()->format('r'),
+    $job->getErrorMsg()
+  );
 }
 ```
