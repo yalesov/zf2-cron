@@ -10,7 +10,7 @@ use Yalesov\Cron\ExceptionInterface;
  * @license GPL http://opensource.org/licenses/gpl-license.php
  */
 class RuntimeException
-    extends \RuntimeException
-    implements ExceptionInterface
+  extends \RuntimeException
+  implements ExceptionInterface
 {
 }

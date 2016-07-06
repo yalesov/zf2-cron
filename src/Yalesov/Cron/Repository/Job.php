@@ -12,59 +12,59 @@ use Doctrine\ORM\EntityRepository;
  */
 class Job extends EntityRepository
 {
-    const STATUS_PENDING = 'pending';
-    const STATUS_RUNNING = 'running';
-    const STATUS_SUCCESS = 'success';
-    const STATUS_MISSED  = 'missed';
-    const STATUS_ERROR   = 'error';
+  const STATUS_PENDING = 'pending';
+  const STATUS_RUNNING = 'running';
+  const STATUS_SUCCESS = 'success';
+  const STATUS_MISSED  = 'missed';
+  const STATUS_ERROR   = 'error';
 
-    /**
-     * get pending cron jobs
-     *
-     * @return array of \Yalesov\Cron\Entity\Job
-     */
-    public function getPending()
-    {
-        $dqb = $this->_em->createQueryBuilder();
-        $dqb->select(array('j'))
-            ->from('Yalesov\Cron\Entity\Job', 'j')
-            ->where($dqb->expr()->in('j.status', array(self::STATUS_PENDING)))
-            ->orderBy('j.scheduleTime', 'ASC');
+  /**
+   * get pending cron jobs
+   *
+   * @return array of \Yalesov\Cron\Entity\Job
+   */
+  public function getPending()
+  {
+    $dqb = $this->_em->createQueryBuilder();
+    $dqb->select(array('j'))
+      ->from('Yalesov\Cron\Entity\Job', 'j')
+      ->where($dqb->expr()->in('j.status', array(self::STATUS_PENDING)))
+      ->orderBy('j.scheduleTime', 'ASC');
 
-        return $dqb->getQuery()->getResult();
-    }
+    return $dqb->getQuery()->getResult();
+  }
 
-    /**
-     * get running cron jobs
-     *
-     * @return array of \Yalesov\Cron\Entity\Job
-     */
-    public function getRunning()
-    {
-        $dqb = $this->_em->createQueryBuilder();
-        $dqb->select(array('j'))
-            ->from('Yalesov\Cron\Entity\Job', 'j')
-            ->where($dqb->expr()->in('j.status', array(self::STATUS_RUNNING)))
-            ->orderBy('j.scheduleTime', 'ASC');
+  /**
+   * get running cron jobs
+   *
+   * @return array of \Yalesov\Cron\Entity\Job
+   */
+  public function getRunning()
+  {
+    $dqb = $this->_em->createQueryBuilder();
+    $dqb->select(array('j'))
+      ->from('Yalesov\Cron\Entity\Job', 'j')
+      ->where($dqb->expr()->in('j.status', array(self::STATUS_RUNNING)))
+      ->orderBy('j.scheduleTime', 'ASC');
 
-        return $dqb->getQuery()->getResult();
-    }
+    return $dqb->getQuery()->getResult();
+  }
 
-    /**
-     * get completed cron jobs
-     *
-     * @return array of \Yalesov\Cron\Entity\Job
-     */
-    public function getHistory()
-    {
-        $dqb = $this->_em->createQueryBuilder();
-        $dqb->select(array('j'))
-            ->from('Yalesov\Cron\Entity\Job', 'j')
-            ->where($dqb->expr()->in('j.status', array(
-                self::STATUS_SUCCESS, self::STATUS_MISSED, self::STATUS_ERROR,
-            )))
-            ->orderBy('j.scheduleTime', 'ASC');
+  /**
+   * get completed cron jobs
+   *
+   * @return array of \Yalesov\Cron\Entity\Job
+   */
+  public function getHistory()
+  {
+    $dqb = $this->_em->createQueryBuilder();
+    $dqb->select(array('j'))
+      ->from('Yalesov\Cron\Entity\Job', 'j')
+      ->where($dqb->expr()->in('j.status', array(
+        self::STATUS_SUCCESS, self::STATUS_MISSED, self::STATUS_ERROR,
+      )))
+      ->orderBy('j.scheduleTime', 'ASC');
 
-        return $dqb->getQuery()->getResult();
-    }
+    return $dqb->getQuery()->getResult();
+  }
 }

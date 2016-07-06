@@ -1,42 +1,42 @@
 {
-    "name": "yalesov/zf2-cron",
-    "description": "ZF2 cron module",
-    "keywords": ["cron", "zf2", "zendframework"],
-    "authors": [
-        {
-            "name": "Yulij Andreevich Lesov",
-            "email": "yalesov@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "php": ">=5.3.3",
-        "yalesov/yaml": "2.*",
-        "zendframework/zendframework": "2.*",
-        "yalesov/arg-validator": "2.*",
-        "yalesov/background-exec": "2.*",
-        "yalesov/zf2-doctrine": "2.*",
-        "yalesov/cron-expr-parser": "2.*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "*",
-        "yalesov/zf2-phpunit-testcase": "2.*",
-        "yalesov/zf2-phing-task": "2.*"
-    },
-    "autoload": {
-        "psr-0": {
-            "Yalesov\\Cron": "src/"
-        }
-    },
-    "license": "ISC",
-    "homepage": "https://github.com/yalesov/zf2-cron",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/yalesov/zf2-cron"
-        }
-    ],
-    "support": {
-        "issues": "https://github.com/yalesov/zf2-cron/issues"
+  "name": "yalesov/zf2-cron",
+  "description": "ZF2 cron module",
+  "keywords": ["cron", "zf2", "zendframework"],
+  "authors": [
+    {
+      "name": "Yulij Andreevich Lesov",
+      "email": "yalesov@gmail.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.3.3",
+    "yalesov/yaml": "2.*",
+    "zendframework/zendframework": "2.*",
+    "yalesov/arg-validator": "2.*",
+    "yalesov/background-exec": "2.*",
+    "yalesov/zf2-doctrine": "2.*",
+    "yalesov/cron-expr-parser": "2.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "yalesov/zf2-phpunit-testcase": "2.*",
+    "yalesov/zf2-phing-task": "2.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Yalesov\\Cron": "src/"
+    }
+  },
+  "license": "ISC",
+  "homepage": "https://github.com/yalesov/zf2-cron",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/yalesov/zf2-cron"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/yalesov/zf2-cron/issues"
+  }
 }

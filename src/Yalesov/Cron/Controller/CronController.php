@@ -14,31 +14,31 @@ use Zend\Mvc\Controller\AbstractActionController;
  */
 class CronController extends AbstractActionController
 {
-    /**
-     * run the cron service
-     *
-     * if called from browser,
-     * will suppress output and continue execution in background
-     *
-     * @return Response|void
-     */
-    public function indexAction()
-    {
-        if (!$this->getRequest() instanceof ConsoleRequest) {
-            BackgroundExec::start();
-        }
-        $sm     = $this->getServiceLocator();
-        $cron   = $sm->get('cron');
-        $em     = $sm->get('doctrine.entitymanager.orm_default');
-        $cron
-            ->setEm($em)
-            ->run();
-
-        $response = $this->getResponse();
-        if (!$response instanceof ConsoleResponse) {
-            $response->setStatusCode(200);
-
-            return $response;
-        }
+  /**
+   * run the cron service
+   *
+   * if called from browser,
+   * will suppress output and continue execution in background
+   *
+   * @return Response|void
+   */
+  public function indexAction()
+  {
+    if (!$this->getRequest() instanceof ConsoleRequest) {
+      BackgroundExec::start();
     }
+    $sm   = $this->getServiceLocator();
+    $cron   = $sm->get('cron');
+    $em   = $sm->get('doctrine.entitymanager.orm_default');
+    $cron
+      ->setEm($em)
+      ->run();
+
+    $response = $this->getResponse();
+    if (!$response instanceof ConsoleResponse) {
+      $response->setStatusCode(200);
+
+      return $response;
+    }
+  }
 }

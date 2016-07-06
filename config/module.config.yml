@@ -1,54 +1,54 @@
 di:
-    instance:
-        alias:
-            cron: Yalesov\Cron\Service\Cron
-        cron:
-            parameters:
-                #em: doctrine.entitymanager.orm_default
-                #can't inject EntityManager here; will pull from controller
-                scheduleAhead: 60
-                scheduleLifetime: 60
-                maxRunnintTime: 60
-                successLogLifetime: 300
-                failureLogLifetime: 10080
+  instance:
+    alias:
+      cron: Yalesov\Cron\Service\Cron
+    cron:
+      parameters:
+        #em: doctrine.entitymanager.orm_default
+        #can't inject EntityManager here; will pull from controller
+        scheduleAhead: 60
+        scheduleLifetime: 60
+        maxRunnintTime: 60
+        successLogLifetime: 300
+        failureLogLifetime: 10080
 doctrine:
-    driver:
-        cron_driver:
-            class: Doctrine\ORM\Mapping\Driver\YamlDriver
-            cache: array
-            paths:
-                - __DIR__/../src/Yalesov/Cron/Entity/Mapping
-        orm_default:
-            drivers:
-                Yalesov\Cron\Entity: cron_driver
+  driver:
+    cron_driver:
+      class: Doctrine\ORM\Mapping\Driver\YamlDriver
+      cache: array
+      paths:
+        - __DIR__/../src/Yalesov/Cron/Entity/Mapping
+    orm_default:
+      drivers:
+        Yalesov\Cron\Entity: cron_driver
 controllers:
-    invokables:
-        Yalesov\Cron\Controller\Cron: Yalesov\Cron\Controller\CronController
+  invokables:
+    Yalesov\Cron\Controller\Cron: Yalesov\Cron\Controller\CronController
 console:
-    router:
-        routes:
-            cron:
-                options:
-                    route: cron
-                    defaults:
-                        controller: Yalesov\Cron\Controller\Cron
-                        action: index
+  router:
+    routes:
+      cron:
+        options:
+          route: cron
+          defaults:
+            controller: Yalesov\Cron\Controller\Cron
+            action: index
 # backup: allow browser calling cron, in case cli cannot run
 router:
-    routes:
-        cron:
-            type: Literal
-            options:
-                route: /cron
-                defaults:
-                    __NAMESPACE__: Yalesov\Cron\Controller
-                    controller: Cron
-                    action: index
-            may_terminate: true
-            child_routes:
-                default:
-                    type: Segment
-                    options:
-                        route: '/[:action[/]]'
-                        constraints:
-                            action: '[a-zA-Z][a-zA-Z0-9_-]*'
+  routes:
+    cron:
+      type: Literal
+      options:
+        route: /cron
+        defaults:
+          __NAMESPACE__: Yalesov\Cron\Controller
+          controller: Cron
+          action: index
+      may_terminate: true
+      child_routes:
+        default:
+          type: Segment
+          options:
+            route: '/[:action[/]]'
+            constraints:
+              action: '[a-zA-Z][a-zA-Z0-9_-]*'

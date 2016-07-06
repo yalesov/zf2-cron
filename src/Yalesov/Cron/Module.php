@@ -13,38 +13,38 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
  */
 class Module implements AutoloaderProviderInterface
 {
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__,
-                ),
-            ),
-        );
+  public function getAutoloaderConfig()
+  {
+    return array(
+      'Zend\Loader\StandardAutoloader' => array(
+        'namespaces' => array(
+          __NAMESPACE__ => __DIR__,
+        ),
+      ),
+    );
+  }
+
+  public function getConfig()
+  {
+    return Yaml::parse(__DIR__ . '/../../../config/module.config.yml');
+  }
+
+  public function onBootstrap(Event $e)
+  {
+    $app = $e->getApplication();
+    $app->getEventManager()
+      ->attach('dispatch', array($this, 'setLayout'), -100);
+  }
+
+  public function setLayout(Event $e)
+  {
+    $matches = $e->getRouteMatch();
+    $controller = $matches->getParam('controller');
+    if (0 !== stripos($controller, __NAMESPACE__, 0)) {
+      return;
     }
 
-    public function getConfig()
-    {
-        return Yaml::parse(__DIR__ . '/../../../config/module.config.yml');
-    }
-
-    public function onBootstrap(Event $e)
-    {
-        $app = $e->getApplication();
-        $app->getEventManager()
-            ->attach('dispatch', array($this, 'setLayout'), -100);
-    }
-
-    public function setLayout(Event $e)
-    {
-        $matches = $e->getRouteMatch();
-        $controller = $matches->getParam('controller');
-        if (0 !== stripos($controller, __NAMESPACE__, 0)) {
-            return;
-        }
-
-        $viewModel = $e->getViewModel();
-        $viewModel->setTemplate('cron/layout');
-    }
+    $viewModel = $e->getViewModel();
+    $viewModel->setTemplate('cron/layout');
+  }
 }
