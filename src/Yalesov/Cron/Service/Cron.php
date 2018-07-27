@@ -184,6 +184,7 @@ class Cron
         continue;
       }
 
+      $caughtException = null;
       try {
         $errorStatus = Repository\Job::STATUS_ERROR;
 
@@ -226,8 +227,12 @@ class Cron
         $job
           ->setStatus(Repository\Job::STATUS_SUCCESS)
           ->setFinishTime(new \DateTime);
-
+      } catch (\Throwable $e) {
+        $caughtException = $e;
       } catch (\Exception $e) {
+        $caughtException = $e;
+      }
+      if ($caughtException !== null) {
         $job
           ->setStatus($errorStatus)
           ->setErrorMsg($e->getMessage())
